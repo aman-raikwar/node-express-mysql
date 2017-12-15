@@ -45,6 +45,19 @@ var categoryModel = {
         return deferred.promise;
     },
 
+    getSingleCategory: function(category_id) {
+        console.log(category_id);
+        var deferred = Q.defer();
+        var query = "SELECT id, name, status FROM tbl_categories WHERE id = " + category_id + " AND is_deleted = 0";
+        db.connection.query(query, function(err, rows) {
+            if (err) {
+                deferred.reject(new Error(err));
+            }
+            deferred.resolve(rows);
+        });
+        return deferred.promise;
+    },
+
     /*********** update category ****************/
     updateCategory: function(id, name) {
         var deferred = Q.defer();

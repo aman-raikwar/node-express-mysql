@@ -7,7 +7,7 @@ var sharp = require('sharp');
 
 var category_controller = {
     /***********************Render Category listing view********************************/
-    getAllCategories: function(req, res, next) {
+    actionIndex: function(req, res, next) {        
         var id = req.query.parent_id;
         if (id != undefined) {
             parent = id;
@@ -15,10 +15,19 @@ var category_controller = {
             parent = 0;
         }
 
-        categoryModel.getParentCategories(parent).then(function(result) {
-            console.log(result);
+        categoryModel.getParentCategories(parent).then(function(result) {            
             res.render('category/index', { categories: result });
         });
+    },
+
+    actionShow: function(req, res, next) {        
+        var category_id = req.query.category_id;
+        if (category_id != undefined && category_id != '') {
+            categoryModel.getSingleCategory(category_id).then(function(result) {            
+                console.log(result);
+                res.render('category/show', { category: result });
+            });        
+        }        
     },
 
     /*********************** add new product category ********************************/

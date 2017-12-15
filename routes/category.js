@@ -3,7 +3,9 @@ var router = express.Router();
 var categoryController = require('../controllers/category_controller');
 
 /****  GET category listing *****/
-router.get('/', categoryController.getAllCategories);
+router.get('/', categoryController.actionIndex);
+
+router.get('/show/:category_id', categoryController.actionShow);
 
 /**** add new primary category  *****/
 router.post('/add', categoryController.addCategory);

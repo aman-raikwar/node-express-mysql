@@ -557,3 +557,7 @@ a{
 #category-table tbody tr:hover {
     background-color: #f2f2f2 !important;
 }
+
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+    vertical-align: middle;
+}
