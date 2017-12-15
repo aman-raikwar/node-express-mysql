@@ -1,0 +1,28 @@
+<%- contentFor('bodyContent') %>
+    <div class="container-fluid">
+        <div class="panel panel-primary">
+            <div class="panel-heading">List of Categories | <a href="javascript:void(0);">Add Category</a></div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>S. No.</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th width="200px;">Action</th>
+                    </tr>
+                    <% for(var i = 0; i < categories.length; i++) {%>
+                        <tr>
+                            <td><%= categories[i].id %></td>
+                            <td><%= categories[i].name %></td>                            
+                            <td><%= categories[i].status == 1 ? '<label class="label label-success">Active</label>' : '<label class="label label-danger">In-active</label>' %></td>
+                            <td>
+                                <a class="btn btn-info" href="/category/<%= categories[i].id %>"><i class="fa fa-search"></i></a>
+                                <a class="btn btn-primary" href="/category/edit/<%= categories[i].id %>"><i class="fa fa-pencil"></i></a>
+                                <a class="btn btn-danger" href="/category/delete"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    <% } %>            
+                </table>
+            </div>
+        </div>
+    </div>
