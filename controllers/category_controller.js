@@ -1,238 +1,167 @@
 var fs = require('fs');
 var categoryModel = require('../models/category_model.js');
-var logger = require('../config/log.js');
-var papercut = require('papercut');
-var sharp = require('sharp');
-
+var faker = require('faker');
 
 var category_controller = {
-    /***********************Render Category listing view********************************/
-    actionIndex: function(req, res, next) {        
-        var id = req.query.parent_id;
-        if (id != undefined) {
-            parent = id;
-        } else {
-            parent = 0;
+
+    actionIndex: function(req, res, next) {
+        var limit = 10;
+        var total = 0;
+        var page = parseInt(req.query.page) || 1;
+        var offset = (limit * page) - limit;
+
+        var orderParams;
+        if (typeof req.query.orderColumn != 'undefined' && req.query.orderColumn != '' && typeof req.query.orderBy != 'undefined' && req.query.orderBy != '') {
+            orderParams = {
+                orderColumn: req.query.orderColumn,
+                orderBy: req.query.orderBy
+            };
         }
 
-        categoryModel.getParentCategories(parent).then(function(result) {            
-            res.render('category/index', { categories: result });
-        });
-    },
-
-    actionShow: function(req, res, next) {        
-        var category_id = req.query.category_id;
-        if (category_id != undefined && category_id != '') {
-            categoryModel.getSingleCategory(category_id).then(function(result) {            
-                console.log(result);
-                res.render('category/show', { category: result });
-            });        
-        }        
-    },
-
-    /*********************** add new product category ********************************/
-    addCategory: function(req, res, next) {
-        var response = {
-            success: true,
-            msg: ""
+        var searchParams = {
+            id: req.query.id,
+            name: req.query.name,
+            status: req.query.status
         };
-        req.checkBody('category', res.__("category_name_required.")).notEmpty();
-        var errors = req.validationErrors();
-        if (errors) {
-            logger.fatal("Errors in validate when update product status");
-            logger.fatal(errors);
-            response.success = false;
-            response.msg = res.__("Please enter category name");
-            res.json(response);
-        } else {
-            categoryModel.checkCategoryExists(req.body.category, 0).then(function(result) {
-                if (result.length > 0) {
-                    response.success = false;
-                    response.msg = res.__("category_already_exists");
-                    res.json(response);
-                } else {
-                    var currentDate = category_controller.getCuurentDate();
-                    var category = {
-                        name: req.body.category,
-                        parent_id: 0,
-                        created_at: currentDate
-                    };
-                    categoryModel.addCategory(category).then(function(result) {
-                            response.msg = res.__("new_category_added");
-                            res.json(response);
-                        })
-                        .catch(function(error) {
-                            logger.fatal("Errors in add new category");
-                            logger.fatal(error);
-                            response.success = false;
-                            response.msg = res.__("mysql_query_error_msg");
-                            res.json(response);
-                        });
-                }
-            });
-        }
-    },
 
-    /*********************** get all parent categories ********************************/
-    getParentCategories: function(req, res, next) {
-        var id = req.query.parent_id;
-        if (id != undefined) {
-            parent = id;
-        } else {
-            parent = 0;
-        }
-        categoryModel.getParentCategories(parent).then(function(result) {
-            res.json(result);
-        });
-    },
+        categoryModel.countCategory(searchParams).then(function(result) {
+            total = result[0].total;
 
-    /*********************** add subcategory ********************************/
-    addSubcategory: function(req, res, next) {
-        var response = {
-            success: true,
-            msg: ""
-        };
-        req.checkBody('sub_category', res.__("category_name_required.")).notEmpty();
-        req.checkBody('parent_id', res.__("product_category_required")).notEmpty();
-        var errors = req.validationErrors();
-        if (errors) {
-            logger.fatal("Errors in validate when update product status");
-            logger.fatal(errors);
-            response.success = false;
-            response.msg = res.__("Please select a product category");
-            res.json(response);
-        } else {
-            categoryModel.checkCategoryExists(req.body.sub_category, req.body.parent_id).then(function(result) {
-                if (result.length > 0) {
-                    response.success = false;
-                    response.msg = res.__("category_already_exists");
-                    res.json(response);
-                } else {
-                    var currentDate = category_controller.getCuurentDate();
-                    var category = {
-                        name: req.body.sub_category,
-                        parent_id: req.body.parent_id,
-                        created_at: currentDate
-                    };
-                    categoryModel.addCategory(category).then(function(result) {
-                            response.msg = res.__("category_updated");
-                            res.json(response);
-                        })
-                        .catch(function(error) {
-                            logger.fatal("Errors in add new category");
-                            logger.fatal(error);
-                            response.success = false;
-                            response.msg = res.__("mysql_query_error_msg");
-                            res.json(response);
-                        });
-                }
-            });
-        }
-    },
-
-    /*********************** update a category ********************************/
-    updateCategory: function(req, res, next) {
-        var response = {
-            success: true,
-            msg: ""
-        };
-        req.checkBody('parent_category_name', res.__("parent_category_name_required.")).notEmpty();
-        req.checkBody('parent_category_id', res.__("product_category_id_required")).notEmpty();
-        var errors = req.validationErrors();
-        if (errors) {
-            logger.fatal("Errors in validate when update product status");
-            logger.fatal(errors);
-            response.success = false;
-            response.msg = res.__("Something went wrong");
-            res.json(response);
-        } else {
-            var parentId = req.body.parent_category_id;
-            var parentName = req.body.parent_category_name;
-            categoryModel.updateCategory(parentId, parentName).then(function(result) {
-                    if (req.body.cat_id != undefined) {
-                        var arr = [],
-                            i;
-                        if (req.body.cat_id.length == 1) {
-                            categoryModel.updateCategory(req.body.cat_id, req.body.cat_name).then(function(result) {})
-                        } else {
-                            for (i = 0; i < req.body.cat_id.length; i++) {
-                                arr[req.body.cat_id[i]] = req.body.cat_name[i];
-                            }
-                            arr.forEach(function(element, key) {
-                                categoryModel.updateCategory(key, element).then(function(res) {})
-                            });
-                        }
-                    }
-                    response.msg = res.__("category_updated");
-                    res.json(response);
-                })
-                .catch(function(error) {
-                    logger.fatal("Errors in update category");
-                    logger.fatal(error);
-                    response.success = false;
-                    response.msg = res.__("mysql_query_error_msg");
-                    res.json(response);
+            categoryModel.getCategories(limit, offset, searchParams, orderParams).then(function(result) {
+                res.render('category/index', {
+                    categories: result,
+                    current: page,
+                    pages: Math.ceil(total / limit),
+                    params: req.query
                 });
+            });
+        });
+    },
+
+    actionShow: function(req, res, next) {
+        var category_id = req.params.category_id;
+        var response = { success: false, msg: "Unable to show the Record!" };
+
+        if (typeof category_id != 'undefined' && category_id != '') {
+            categoryModel.singleCategory(category_id).then(function(result) {
+                if (typeof result != 'undefined' && result != '') {
+                    res.render('category/show', { category: result });
+                } else {
+                    res.redirect('/category/');
+                }
+            }).catch(function(error) {
+                res.redirect('/category/');
+            });
+        } else {
+            res.redirect('/category/');
         }
     },
 
-    /*********************** delete subcategory ********************************/
-    deleteCategory: function(req, res, next) {
-        var response = {
-            success: true,
-            msg: ""
-        };
+    actionCreate: function(req, res, next) {
+        var response = { success: false, msg: "" };
+        var params = req.body;
+        res.render('category/create', { response: response, params: params });
+    },
+
+    actionStore: function(req, res, next) {
+        var response = { success: false, msg: "" };
+
+        req.checkBody('name', 'Category name is required').notEmpty();
+        var errors = req.validationErrors();
+
+        if (errors) {
+            response.msg = "Please enter category name";
+            res.render('category/create', { response: response, params: req.body });
+        } else {
+            categoryModel.checkCategoryExists(req.body.name).then(function(result) {
+                if (result.length > 0) {
+                    response.msg = "Category '<b>" + req.body.name + "</b>' already exists!";
+                    res.render('category/create', { response: response, params: req.body });
+                } else {
+                    var currentDate = category_controller.getCurrentDate();
+                    var category = { name: req.body.name, created_at: currentDate };
+                    categoryModel.addCategory(category).then(function(result) {
+                        response.success = true;
+                        response.msg = "Category added successfully!";
+                        res.redirect('/category/');
+                    }).catch(function(error) {
+                        response.msg = "Unable to add new Category!";
+                        res.render('category/create', { response: response, params: req.body });
+                    });
+                }
+            });
+        }
+    },
+
+    actionEdit: function(req, res, next) {
+        var response = { success: false, msg: "" };
         var category_id = req.params.category_id;
+
+        if (typeof category_id != 'undefined' && category_id != '') {
+            categoryModel.singleCategory(category_id).then(function(result) {
+                res.render('category/edit', { category: result, response: response });
+            });
+        } else {
+            res.redirect('/category/');
+        }
+    },
+
+    actionUpdate: function(req, res, next) {
+        var response = { success: false, msg: "" };
+        var category_id = req.params.category_id;
+        var category = {};
+
+        categoryModel.singleCategory(category_id).then(function(result) {
+            category = result;
+        });
+
+        req.checkBody('name', 'Category name is required').notEmpty();
+        var errors = req.validationErrors();
+
+        if (errors) {
+            response.msg = "Please enter category name";
+            res.render('category/edit', { response: response, category: category });
+        } else {
+            categoryModel.checkCategoryExists(req.body.name, category_id).then(function(result) {
+                if (result.length > 0) {
+                    response.msg = "Category '<b>" + req.body.name + "</b>' already exists!";
+                    res.render('category/edit', { response: response, params: req.body, category: category });
+                } else {
+                    var currentDate = category_controller.getCurrentDate();
+                    var categoryData = { name: req.body.name, status: req.body.status, updated_at: currentDate };
+                    categoryModel.updateCategory(categoryData, category_id).then(function(result) {
+                        response.success = true;
+                        response.msg = "Category updated successfully!";
+                        res.redirect('/category/');
+                    }).catch(function(error) {
+                        response.msg = "Unable to update Category!";
+                        res.render('category/edit', { response: response, params: req.body, category: category });
+                    });
+                }
+            });
+        }
+    },
+
+    actionDelete: function(req, res, next) {
+        var response = { success: false, msg: "" };
+        var category_id = req.params.category_id;
+
         categoryModel.deleteCategory(category_id).then(function(result) {
-                if (result) {
-                    response.msg = res.__("category_delete_successfull");
-                    res.json(response);
-                } else {
-                    response.success = false;
-                    response.msg = res.__("general_error_try_again_msg");
-                    res.json(response);
-                }
-            })
-            .catch(function(error) {
-                logger.fatal("Error on delete a product images");
-                logger.fatal(error);
-                response.success = false;
-                response.msg = res.__("mysql_query_error_msg");
-                response.errors = error;
-                res.json(result);
-            });
+            if (result) {
+                response.success = true;
+                response.msg = "Category deleted successfully";
+                res.json(response);
+            } else {
+                response.msg = "Unable to delete the category!";
+                res.json(response);
+            }
+        }).catch(function(error) {
+            response.msg = "Unable to delete the category!";
+            res.json(response);
+        });
     },
 
-    /*********************** delete primary category ********************************/
-    deletePrimaryCategory: function(req, res, next) {
-        var response = {
-            success: true,
-            msg: ""
-        };
-        var parent_id = req.params.parent_id;
-        categoryModel.deleteCategory(parent_id).then(function(result) {
-                if (result) {
-                    categoryModel.deleteSubCategory(parent_id).then(function(result) {});
-                    response.msg = res.__("category_delete_successfull");
-                    res.json(response);
-                } else {
-                    response.success = false;
-                    response.msg = res.__("general_error_try_again_msg");
-                    res.json(response);
-                }
-            })
-            .catch(function(error) {
-                logger.fatal("Error on delete a product images");
-                logger.fatal(error);
-                response.success = false;
-                response.msg = res.__("mysql_query_error_msg");
-                response.errors = error;
-                res.json(result);
-            });
-    },
-
-    /*********************** get current date time ********************************/
-    getCuurentDate: function() {
+    getCurrentDate: function() {
         var date = new Date();
         var curmonth = (date.getMonth() + 1);
         if (curmonth < 10)
@@ -243,6 +172,21 @@ var category_controller = {
         var dbdate = date.getFullYear() + "-" + curmonth + "-" + curDate + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
         return dbdate;
     },
+
+    actionFakeData: function(req, res, next) {
+        for (var i = 0; i < 90; i++) {
+            var currentDate = category_controller.getCurrentDate();
+            var category = { name: faker.commerce.productName(), created_at: currentDate };
+
+            categoryModel.addCategory(category).then(function(result) {
+                console.log('Success:', result);
+            }).catch(function(error) {
+                console.log('Error:', error);
+            });
+        }
+
+        res.redirect('/category/');
+    }
 
 }
 

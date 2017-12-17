@@ -2,22 +2,18 @@ var express = require('express');
 var router = express.Router();
 var categoryController = require('../controllers/category_controller');
 
-/****  GET category listing *****/
 router.get('/', categoryController.actionIndex);
 
 router.get('/show/:category_id', categoryController.actionShow);
 
-/**** add new primary category  *****/
-router.post('/add', categoryController.addCategory);
-/**** get all parent categories  *****/
-router.get('/get_parent_categories', categoryController.getParentCategories);
-/**** add new subcategory  *****/
-router.post('/add-subcategory', categoryController.addSubcategory);
-/**** update a category  *****/
-router.post('/update-category', categoryController.updateCategory);
-/**** delete subcategories  *****/
-router.delete('/delete/:category_id', categoryController.deleteCategory);
-/**** delete primary categories and related subcategories  *****/
-router.delete('/delete-primary/:parent_id', categoryController.deletePrimaryCategory);
+router.get('/create', categoryController.actionCreate);
+router.post('/create', categoryController.actionStore);
+
+router.get('/edit/:category_id', categoryController.actionEdit);
+router.post('/edit/:category_id', categoryController.actionUpdate);
+
+router.delete('/delete/:category_id', categoryController.actionDelete);
+
+router.get('/fake-data', categoryController.actionFakeData);
 
 module.exports = router;

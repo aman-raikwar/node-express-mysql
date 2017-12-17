@@ -3,9 +3,9 @@ var mysql = require('mysql');
 var db = require('../config/database.js');
 var Q = require("q");
 
-var categoryModel = {
+var authModel = {
 
-    checkCategoryExists: function(name, category_id) {
+    checkEmailExists: function(name, category_id) {
         var deferred = Q.defer();
         var query = "SELECT id, name FROM tbl_categories WHERE ";
         var data = { name: striptags(name) };
@@ -152,4 +152,4 @@ var categoryModel = {
 
 };
 
-module.exports = categoryModel;
+module.exports = authModel;

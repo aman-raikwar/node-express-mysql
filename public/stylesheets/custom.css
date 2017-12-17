@@ -251,28 +251,6 @@ a.sidebar-brand:focus {
 
 
 
-/*---------- Css added by RavendrA ---------------*/
-
-
-/*.usrCmnt {
-    float: left;
-    margin: 1px 10px 1px 0;
-    text-transform: capitalize;
-}
-.cmntMsg {
-    display: table;
-}
-#newsfeed .img-circle {
-    max-width: 30px;
-}
-#newsfeed .pull-left + .media-body {
-    padding-top: 4px;
-}
-#newsfeed .pull-left + .media-body + .media-list.push {
-    margin-top: 9px;
-}
-.sharePost { margin-top:  10px }
-*/
 
 .profile-status .mentiony-container .mentiony-popover {
     top: 100% !important
@@ -287,158 +265,8 @@ a.sidebar-brand:focus {
     overflow: inherit;
 }
 
-
-
-/*.media-feed.media-feed-hover .media-body { overflow: visible}*/
-
-
-/*---------------16-may-2017---------------*/
-
-
-/*span.text-muted.pull-right span.text-success {
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 5px;
-}
-.media-feed.media-feed-hover > .media:hover .media {
-    border-top: 1px solid #f2f2f2;
-}
-.media {
-    margin: 0;
-    padding: 2px 0;
-    border-top: 1px solid #f9f9f9;
-}
-.post {
-    margin: -20px -20px 0px;
-    padding: 10px 20px;
-    background: #f5f5f5;
-    border-bottom: 1px solid #ececec;
-}
-.media-feed.media-feed-hover .media:first-child {
-    margin-top: 0;
-    overflow: visible;
-}
-.post .cmntMsg {
-    font-size: 16px;
-}
-.media-feed.media-feed-hover .media:first-child + .media { border: 0 }
-.write-commnet {
-    margin: -5px -20px -2px;
-    background: #f5f5f5;
-    padding: 6px 20px;
-}
-.media-feed .media-list {
-    margin-bottom: 1px !important;
-    padding-bottom: 9px;
-}
-.load-more {
-    background: #f7f7f7;
-    display: block;
-    padding: 3px 10px 4px;
-    border: 1px solid #eee;
-    font-size: 11px;
-    width: 100%;
-}
-.load-more:hover {
-    background: #6ad2eb;
-    color: #fff;
-    border-color: #6ad2eb;
-}
-#newsfeed .post .img-circle,
-#newsfeed .write-commnet .img-circle { border: 1px solid #e0e0e0}
-.post > a.pull-left,
-.write-commnet > a.pull-left { margin-right: 8px}
-.write-commnet textarea.form-control {
-    border-radius: 0;
-    margin-bottom: 3px;
-    resize: none;
-}*/
-
-
-/***************************************/
-
-
-/*.write-commnet .mentiony-container .mentiony-popover {
-    top: 100% !important;
-}
-.media-feed.media-feed-hover .media-body { overflow: visible}*/
-
-
-/*css by New Developer*/
-
-
-/*.validationError {
-  color: red;
-  /*display: none;*/
-
-
-/*padding: 0 0 0 8px;
-  margin: 0;
- font-size: 10px;
-}
-/*.filetypeText{
-  color: white;
-}
-.width100{
-  width: 100%;
-}
-.textCenter{
-  text-align: center;
-}
-.noCompany {
-  display: none;
-}
-.edit_product_heading{
-  display: none;
-}
-a{
-  cursor: pointer;
-}
-
-.write-commnet .btn-primary{ float: right;  }
-.mentiony-container{  margin-bottom: 10px; margin-top: 10px; }
-
-.media, .media-body {
-    margin-top: -9px;
-    overflow: inherit;
-    padding: 9px 12px;
-}
-
-.mentiony-container.initial-size{ width: 100% !important; background-color: #fff;}
-.comment-status::after {
-    clear: both;
-    content: "";
-    display: block;
-}
-
-.post .cmntMsg {    margin-top: 10px; display: block;; padding: 0px 8px;}
-
-.usrCmnt a{ font-size: 11px; }
-
-.comment-status .mentiony-container{ border: none; }
-
-.media-feed > .media {
-    border-bottom: 1px dotted #dbe1e8;
-
-}
-
-.sharePost{ text-align: right; }
-
-.sharePost .btn-sm, .sharePost .btn-group-sm > .sharePost .btn {
-    padding: 1px 10px;
-}
-
-.load-comment {
-    margin: 0 -13px !important;
-}*/
-
-
-/* CSS used here will be applied after bootstrap.css */
-
 .dropdown2 {
     display: inline-block;
-    /*margin-left:20px;
-    padding:10px;*/
 }
 
 
@@ -496,11 +324,6 @@ a{
     border-radius: 4px;
 }
 
-
-.open>.dropdown-menu {
-    /*margin-left: -349px !important;*/
-}
-
 .notify_count {
     position: absolute;
     top: 10px;
@@ -517,10 +340,6 @@ a{
     max-height: 40px !important;
 }
 
-
-
-/*
-#notification-div{width:200px;height:150px;overflow:auto;}*/
 
 #sidebar {
     overflow: initial;
@@ -545,19 +364,10 @@ a{
 }
 
 
-
-/*.category-block input {
-  width: 100% !important;
-}*/
-
 #category-table tbody tr {
     cursor: pointer !important;
 }
 
 #category-table tbody tr:hover {
     background-color: #f2f2f2 !important;
-}
-
-.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
-    vertical-align: middle;
 }

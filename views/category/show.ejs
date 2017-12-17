@@ -1,43 +1,33 @@
 <%- contentFor('bodyContent') %>
-    <div class="container-fluid">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                Single Category
-                <a href="javascript:void(0);" class="pull-right"><i class="fa fa-plus"></i> Add Category</a>
-            </div>
-            <div class="panel-body">
-                <table class="table table-bordered">
-                    <tr>
-                        <th>S. No.</th>
-                        <th>Name</th>
-                        <th>Status</th>
-                        <th width="200px;">Action</th>
-                    </tr>
-                    <% if(category.length > 0) { %>                        
-                        <tr>
-                            <td><%= category[i].id %></td>
-                            <td><%= category[i].name %></td>                            
-                            <td>
-                            <% if(category[i].status == 1) { %>
-                                <label class="label label-success">Active</label>
-                            <% } else { %>
-                                <label class="label label-danger">In-active</label>
-                            <% } %>
-                            </td>
-                            <td>
-                                <a class="btn btn-info btn-sm" href="/category/<%= category[i].id %>"><i class="fa fa-search"></i></a>
-                                <a class="btn btn-primary btn-sm" href="/category/edit/<%= category[i].id %>"><i class="fa fa-pencil"></i></a>
-                                <a class="btn btn-danger btn-sm" href="/category/delete"><i class="fa fa-trash"></i></a>
-                            </td>
-                        </tr>                        
-                    <% } else { %>
-                        <tr>
-                            <td colspan="4">
-                                <div class="alert alert-warning">No Category Exist.</div>
-                            </td>                            
-                        </tr>
-                    <% } %>
-                </table>
-            </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            Single Category
+            <a href="/category" class="pull-right"><i class="fa fa-list"></i> Back to Categories</a>
         </div>
-    </div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th width="150px;">Name</th>
+                    <td><%= category.name %></td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>
+                        <% if(category.status == 1) { %>
+                            <label class="label label-success">Active</label>
+                        <% } else { %>
+                            <label class="label label-danger">In-active</label>
+                        <% } %>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Created At</th>
+                    <td><%= category.created_at %></td>
+                </tr>
+                <tr>
+                    <th>Updated At</th>
+                    <td><%= category.updated_at %></td>
+                </tr>
+            </table>
+        </div>
+    </div>   

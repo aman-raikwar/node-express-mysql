@@ -21,7 +21,10 @@ var db = require('./config/database.js');
 
 //******** include routes ********//
 var indexRoute = require('./routes/index');
+var authRoute = require('./routes/auth');
 var categoryRoute = require('./routes/category');
+
+app.use(expressValidator());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -75,6 +78,7 @@ app.use(expressValidator({
 
 //*** use routes *****//
 app.use('/', indexRoute);
+app.use('/auth', authRoute);
 app.use('/category', categoryRoute);
 
 
