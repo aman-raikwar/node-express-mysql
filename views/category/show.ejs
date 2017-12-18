@@ -1,33 +1,54 @@
-<%- contentFor('bodyContent') %>
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            Single Category
-            <a href="/category" class="pull-right"><i class="fa fa-list"></i> Back to Categories</a>
+<%- contentFor('breadcrumbContent') %>
+    <div class="row page-titles">
+        <div class="col-md-5 col-8 align-self-center">
+            <h3 class="text-themecolor">Show Category</h3>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/category">Categories</a></li>
+                <li class="breadcrumb-item active">Show Category</li>
+            </ol>
         </div>
-        <div class="panel-body">
-            <table class="table table-bordered">
-                <tr>
-                    <th width="150px;">Name</th>
-                    <td><%= category.name %></td>
-                </tr>
-                <tr>
-                    <th>Status</th>
-                    <td>
-                        <% if(category.status == 1) { %>
-                            <label class="label label-success">Active</label>
-                        <% } else { %>
-                            <label class="label label-danger">In-active</label>
-                        <% } %>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Created At</th>
-                    <td><%= category.created_at %></td>
-                </tr>
-                <tr>
-                    <th>Updated At</th>
-                    <td><%= category.updated_at %></td>
-                </tr>
-            </table>
+        <div class="col-md-7 col-4 align-self-center">
+            <div class="d-flex m-t-10 justify-content-end">
+                <div class="d-flex m-r-20 m-l-10 hidden-md-down">
+                    <a href="/category/" class="pull-right"><i class="fa fa-plus"></i> List of Categories</a>
+                </div>
+                <div class="">
+                    <button class="right-side-toggle waves-effect waves-light btn-success btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<%- contentFor('pageContent') %>
+    
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-hover">
+                    <tr>
+                        <td width="150px;">Name</td>
+                        <td><%= category.name %></td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td>
+                            <% if(category.status == 1) { %>
+                                <label class="label label-success">Active</label>
+                            <% } else { %>
+                                <label class="label label-danger">In-active</label>
+                            <% } %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Created At</td>
+                        <td><%= category.created_at %></td>
+                    </tr>
+                    <tr>
+                        <td>Updated At</td>
+                        <td><%= category.updated_at %></td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>   

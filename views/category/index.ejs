@@ -1,151 +1,177 @@
-<%- contentFor('bodyContent') %>
-    
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            List of Categories
-            <a href="/category/create" class="pull-right"><i class="fa fa-plus"></i> Add Category</a>
+<%- contentFor('breadcrumbContent') %>
+    <div class="row page-titles">
+        <div class="col-md-5 col-8 align-self-center">
+            <h3 class="text-themecolor">Categories</h3>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active">Categories</li>
+            </ol>
         </div>
-        <div class="panel-body">
-            <table class="table table-bordered table-condensed">
-                <tr>
-                    <th width="80px;" class="text-center">
-                        <a href="javascript:void(0);" class="sort" data-type="id" data-sort="<%= params.orderColumn == 'id' ? (params.orderBy == 'ASC' ? 'DESC' : 'ASC') : 'ASC' %>">
-                            S. No. 
-                            <% 
-                            if (params.orderColumn == 'id') {
-                                if(params.orderBy == 'ASC') {
-                                    %><i class="fa fa-sort-amount-asc pull-right"></i><%
-                                } else {
-                                    %><i class="fa fa-sort-amount-desc pull-right"></i><%
-                                }
-                            } else {
-                                %><i class="fa fa-sort-amount-desc pull-right"></i><%
-                            } 
-                            %>                                
-                        </a>
-                    </th>
-                    <th>
-                        <a href="javascript:void(0);" class="sort" data-type="name" data-sort="<%= params.orderColumn == 'name' ? (params.orderBy == 'ASC' ? 'DESC' : 'ASC') : 'ASC' %>">
-                            Name 
-                            <% 
-                            if (params.orderColumn == 'name') {
-                                if(params.orderBy == 'ASC') {
-                                    %><i class="fa fa-sort-amount-asc pull-right"></i><%
-                                } else {
-                                    %><i class="fa fa-sort-amount-desc pull-right"></i><%
-                                }
-                            } else {
-                                %><i class="fa fa-sort-amount-desc pull-right"></i><%
-                            } 
-                            %>                                
-                        </a>
-                    </th>
-                    <th width="100px;" class="text-center">
-                        <a href="javascript:void(0);" class="sort" data-type="status" data-sort="<%= params.orderColumn == 'status' ? (params.orderBy == 'ASC' ? 'DESC' : 'ASC') : 'ASC' %>">
-                            Status
-                            <% 
-                            if (params.orderColumn == 'status') {
-                                if(params.orderBy == 'ASC') {
-                                    %><i class="fa fa-sort-amount-asc pull-right"></i><%
-                                } else {
-                                    %><i class="fa fa-sort-amount-desc pull-right"></i><%
-                                }
-                            } else {
-                                %><i class="fa fa-sort-amount-desc pull-right"></i><%
-                            } 
-                            %>                                
-                        </a>
-                    </th>
-                    <th width="150px;" class="text-center">Action</th>
-                </tr>
-                <tr>
-                    <th>
-                        <input type="text" class="form-control id-change" id="id" name="id" placeholder="Id" value="<%= params.id %>">
-                    </th>
-                    <th>
-                        <input type="text" class="form-control name-change" id="name" name="name" placeholder="Name" value="<%= params.name %>">
-                    </th>
-                    <th>
-                        <select class="form-control status-change" name="status" id="status">
-                            <option value="" <%= params.status == '' ? 'selected' : '' %>>Status</option>
-                            <option value="1" <%= params.status == 1 ? 'selected' : '' %>>Active</option>
-                            <option value="0" <%= params.status == 0 ? 'selected' : '' %>>Inactive</option>
-                        </select>
-                    </th>
-                    <th class="text-center">
-                        <button class="btn btn-warning btn-sm reset-search">Reset</button>
-                    </th>
-                </tr>
-                <% if(categories.length) { %>
-                    <% for(var i = 0; i < categories.length; i++) {%>
-                        <tr class="row-<%= categories[i].id %>">
-                            <td class="text-center"><%= categories[i].id %></td>
-                            <td><%= categories[i].name %></td>                            
-                            <td class="text-center">
-                            <% if(categories[i].status == 1) { %>
-                                <label class="label label-success">Active</label>
-                            <% } else { %>
-                                <label class="label label-danger">In-active</label>
-                            <% } %>
-                            </td>
-                            <td class="text-center">
-                                <a class="btn btn-info btn-sm" href="/category/show/<%= categories[i].id %>"><i class="fa fa-search"></i></a>
-                                <a class="btn btn-primary btn-sm" href="/category/edit/<%= categories[i].id %>"><i class="fa fa-pencil"></i></a>
-                                <a class="btn btn-danger btn-sm delete-category" data-category="<%= categories[i].id %>" href="javascript:void(0);"><i class="fa fa-trash"></i></a>
-                            </td>
-                        </tr>
-                    <% } %>
-                <% } else { %>
-                    <tr>
-                        <td colspan="4">
-                            <div class="alert alert-warning">No Categories Exist.</div>
-                        </td>                            
-                    </tr>
-                <% } %>
-            </table>
-
-            <% if (pages > 0) { %>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <p class="show-summary">Current Page: <%= Number(current) %>, Total Pages: <%= pages %></p>
-                    </div>
-                    <div class="col-sm-8">
-                        <ul class="pagination pull-right">
-                            <% if (current == 1) { %>
-                                <li class="disabled"><a>First</a></li>
-                            <% } else { %>
-                                <li><a href="/category/?page=1">First</a></li>
-                            <% } %>
-                            <% var i = (Number(current) > 3 ? Number(current) - 2 : 1) %>
-                            <% if (i !== 1) { %>
-                                <li class="disabled"><a>...</a></li>
-                            <% } %>
-                            <% for (; i <= (Number(current) + 2) && i <= pages; i++) { %>
-                                <% if (i == current) { %>
-                                    <li class="active"><a><%= i %></a></li>
-                                <% } else { %>
-                                    <li><a href="/category/?page=<%= i %>"><%= i %></a></li>
-                                <% } %>
-                                <% if (i == Number(current) + 2 && i < pages) { %>
-                                    <li class="disabled"><a>...</a></li>
-                                <% } %>
-                            <% } %>
-                            <% if (current == pages) { %>
-                                <li class="disabled"><a>Last</a></li>
-                            <% } else { %>
-                                <li><a href="/category/?page=<%= pages %>">Last</a></li>
-                            <% } %>
-                        </ul>
-                    </div>
+        <div class="col-md-7 col-4 align-self-center">
+            <div class="d-flex m-t-10 justify-content-end">
+                <div class="d-flex m-r-20 m-l-10 hidden-md-down">
+                    <a href="/category/create" class="pull-right"><i class="fa fa-plus"></i> Category</a>
                 </div>
-            <% } %>
+                <div class="">
+                    <button class="right-side-toggle waves-effect waves-light btn-success btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+                </div>
+            </div>
         </div>
     </div>
+
+<%- contentFor('pageContent') %>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <% if(typeof messages.type !='undefined' && messages.type !='') { %>
+                        <div class="alert alert-<%- messages.type %>"><%- messages.message %></div>
+                    <% } %>
+                    <table class="table m-t-10 table-hover">
+                        <thead>
+                            <tr class="footable-odd">
+                                <th width="100px;" class="text-center">
+                                    <a href="javascript:void(0);" class="sort" data-type="id" data-sort="<%= params.orderColumn == 'id' ? (params.orderBy == 'ASC' ? 'DESC' : 'ASC') : 'ASC' %>">
+                                        S. No. 
+                                        <% if (params.orderColumn == 'id') {
+                                            if(params.orderBy == 'ASC') { %>
+                                                <i class="fa fa-sort-amount-asc pull-right"></i>
+                                            <% } else { %>
+                                                <i class="fa fa-sort-amount-desc pull-right"></i>
+                                                <%
+                                            }
+                                        } else { %>
+                                            <i class="fa fa-sort-amount-desc pull-right"></i>
+                                        <% } %>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a href="javascript:void(0);" class="sort" data-type="name" data-sort="<%= params.orderColumn == 'name' ? (params.orderBy == 'ASC' ? 'DESC' : 'ASC') : 'ASC' %>">
+                                        Name 
+                                        <% 
+                                        if (params.orderColumn == 'name') {
+                                            if(params.orderBy == 'ASC') {
+                                                %><i class="fa fa-sort-amount-asc pull-right"></i><%
+                                            } else {
+                                                %><i class="fa fa-sort-amount-desc pull-right"></i><%
+                                            }
+                                        } else {
+                                            %><i class="fa fa-sort-amount-desc pull-right"></i><%
+                                        } 
+                                        %>                                
+                                    </a>
+                                </th>
+                                <th width="150px;" class="text-center">
+                                    <a href="javascript:void(0);" class="sort" data-type="status" data-sort="<%= params.orderColumn == 'status' ? (params.orderBy == 'ASC' ? 'DESC' : 'ASC') : 'ASC' %>">
+                                        Status
+                                        <% 
+                                        if (params.orderColumn == 'status') {
+                                            if(params.orderBy == 'ASC') {
+                                                %><i class="fa fa-sort-amount-asc pull-right"></i><%
+                                            } else {
+                                                %><i class="fa fa-sort-amount-desc pull-right"></i><%
+                                            }
+                                        } else {
+                                            %><i class="fa fa-sort-amount-desc pull-right"></i><%
+                                        } 
+                                        %>                                
+                                    </a>
+                                </th>
+                                <th width="150px;" class="text-center">Action</th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <input type="text" class="form-control id-change" id="id" name="id" placeholder="Id" value="<%= params.id %>">
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control name-change" id="name" name="name" placeholder="Name" value="<%= params.name %>">
+                                </th>
+                                <th>
+                                    <select class="form-control status-change" name="status" id="status">
+                                        <option value="" <%= params.status == '' ? 'selected' : '' %>>Status</option>
+                                        <option value="1" <%= params.status == 1 ? 'selected' : '' %>>Active</option>
+                                        <option value="0" <%= params.status == 0 ? 'selected' : '' %>>Inactive</option>
+                                    </select>
+                                </th>
+                                <th class="text-center">
+                                    <button class="btn btn-warning btn-sm reset-search">Reset</button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if(categories.length) { %>
+                                <% for(var i = 0; i < categories.length; i++) {%>
+                                    <tr class="<%= i%2 == 0 ? 'footable-odd' : 'footable-even' %> row-<%= categories[i].id %>">
+                                        <td class="text-center"><%= categories[i].id %></td>
+                                        <td><%= categories[i].name %></td>                            
+                                        <td class="text-center">
+                                        <% if(categories[i].status == 1) { %>
+                                            <label class="label label-success">Active</label>
+                                        <% } else { %>
+                                            <label class="label label-danger">In-active</label>
+                                        <% } %>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-info btn-sm" href="/category/show/<%= categories[i].id %>"><i class="fa fa-search"></i></a>
+                                            <a class="btn btn-primary btn-sm" href="/category/edit/<%= categories[i].id %>"><i class="fa fa-pencil"></i></a>
+                                            <a class="btn btn-danger btn-sm delete-category" data-category="<%= categories[i].id %>" href="javascript:void(0);"><i class="fa fa-times"></i></a>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="alert alert-warning">No Categories Exist.</div>
+                                    </td>                            
+                                </tr>
+                            <% } %>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4">
+                                    <button type="button" class="btn btn-info btn-rounded">Current Page: <%= Number(current) %>, Total Pages: <%= pages %></button>                                
+                                    <div class="pull-right">
+                                        <% if (pages > 0) { %>
+                                            <ul class="pagination">
+                                                <% if (current == 1) { %>
+                                                    <li class="page-item disabled"><a class="page-link">First</a></li>
+                                                <% } else { %>
+                                                    <li class="page-item"><a class="page-link" href="/category/?page=1">First</a></li>
+                                                <% } %>
+                                                <% var i = (Number(current) > 3 ? Number(current) - 2 : 1) %>
+                                                <% if (i !== 1) { %>
+                                                    <li class="page-item disabled"><a class="page-link">...</a></li>
+                                                <% } %>
+                                                <% for (; i <= (Number(current) + 2) && i <= pages; i++) { %>
+                                                    <% if (i == current) { %>
+                                                        <li class="page-item active"><a class="page-link"><%= i %></a></li>
+                                                    <% } else { %>
+                                                        <li class="page-item"><a class="page-link" href="/category/?page=<%= i %>"><%= i %></a></li>
+                                                    <% } %>
+                                                    <% if (i == Number(current) + 2 && i < pages) { %>
+                                                        <li class="page-item disabled"><a class="page-link">...</a></li>
+                                                    <% } %>
+                                                <% } %>
+                                                <% if (current == pages) { %>
+                                                    <li class="page-item disabled"><a class="page-link">Last</a></li>
+                                                <% } else { %>
+                                                    <li class="page-item"><a class="page-link" href="/category/?page=<%= pages %>">Last</a></li>
+                                                <% } %>
+                                            </ul>
+                                        <% } %>                                        
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>    
     
     <script type="text/javascript">
-        var nameParam = '<%= params.name %>';
-        var statusParam = '<%= params.status %>';
-        var orderColumnParam = '<%= params.orderColumn %>';
-        var orderByParam = '<%= params.orderBy %>';
+        var params = JSON.parse('<%- JSON.stringify(params) %>');
+        var messages = JSON.parse('<%- JSON.stringify(messages) %>');
     </script>
-    <script type="text/javascript" src="/js/category.js"></script>
+    <script type="text/javascript" src="/web/js/category.js"></script>

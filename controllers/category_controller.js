@@ -40,53 +40,75 @@ var category_controller = {
 
     actionShow: function(req, res, next) {
         var category_id = req.params.category_id;
-        var response = { success: false, msg: "Unable to show the Record!" };
+        var message = "Unable to show the Record!";
 
         if (typeof category_id != 'undefined' && category_id != '') {
             categoryModel.singleCategory(category_id).then(function(result) {
                 if (typeof result != 'undefined' && result != '') {
                     res.render('category/show', { category: result });
                 } else {
+                    req.flash('icon', 'error');
+                    req.flash('type', 'danger');
+                    req.flash('message', message);
                     res.redirect('/category/');
                 }
             }).catch(function(error) {
+                req.flash('icon', 'error');
+                req.flash('type', 'danger');
+                req.flash('message', message);
                 res.redirect('/category/');
             });
         } else {
+            req.flash('icon', 'error');
+            req.flash('type', 'danger');
+            req.flash('message', message);
             res.redirect('/category/');
         }
     },
 
     actionCreate: function(req, res, next) {
-        var response = { success: false, msg: "" };
         var params = req.body;
-        res.render('category/create', { response: response, params: params });
+        req.flash('icon', '');
+        req.flash('type', '');
+        req.flash('message', '');
+        res.render('category/create', { params: params });
     },
 
     actionStore: function(req, res, next) {
-        var response = { success: false, msg: "" };
+        var message = "";
 
         req.checkBody('name', 'Category name is required').notEmpty();
         var errors = req.validationErrors();
 
         if (errors) {
-            response.msg = "Please enter category name";
-            res.render('category/create', { response: response, params: req.body });
+            message = "Please enter category name";
+            req.flash('icon', 'error');
+            req.flash('type', 'danger');
+            req.flash('message', message);
+            res.render('category/create', { params: req.body });
         } else {
             categoryModel.checkCategoryExists(req.body.name).then(function(result) {
                 if (result.length > 0) {
-                    response.msg = "Category '<b>" + req.body.name + "</b>' already exists!";
-                    res.render('category/create', { response: response, params: req.body });
+                    message = "Category '<b>" + req.body.name + "</b>' already exists!";
+                    req.flash('icon', 'error');
+                    req.flash('type', 'danger');
+                    req.flash('message', message);
+                    res.render('category/create', { params: req.body });
                 } else {
                     var currentDate = category_controller.getCurrentDate();
                     var category = { name: req.body.name, created_at: currentDate };
                     categoryModel.addCategory(category).then(function(result) {
-                        response.success = true;
-                        response.msg = "Category added successfully!";
+                        message = "Category added successfully!";
+                        req.flash('type', 'success');
+                        req.flash('icon', 'success');
+                        req.flash('message', message);
                         res.redirect('/category/');
                     }).catch(function(error) {
-                        response.msg = "Unable to add new Category!";
-                        res.render('category/create', { response: response, params: req.body });
+                        message = "Unable to add new Category!";
+                        req.flash('type', 'danger');
+                        req.flash('icon', 'error');
+                        req.flash('message', message);
+                        res.render('category/create', { params: req.body });
                     });
                 }
             });
@@ -94,20 +116,23 @@ var category_controller = {
     },
 
     actionEdit: function(req, res, next) {
-        var response = { success: false, msg: "" };
         var category_id = req.params.category_id;
 
         if (typeof category_id != 'undefined' && category_id != '') {
             categoryModel.singleCategory(category_id).then(function(result) {
-                res.render('category/edit', { category: result, response: response });
+                res.render('category/edit', { category: result });
             });
         } else {
+            var message = "Unable to edit Category!";
+            req.flash('type', 'danger');
+            req.flash('icon', 'error');
+            req.flash('message', message);
             res.redirect('/category/');
         }
     },
 
     actionUpdate: function(req, res, next) {
-        var response = { success: false, msg: "" };
+        var message = "";
         var category_id = req.params.category_id;
         var category = {};
 
@@ -119,22 +144,33 @@ var category_controller = {
         var errors = req.validationErrors();
 
         if (errors) {
-            response.msg = "Please enter category name";
-            res.render('category/edit', { response: response, category: category });
+            message = "Please enter category name";
+            req.flash('type', 'danger');
+            req.flash('icon', 'error');
+            req.flash('message', message);
+            res.render('category/edit', { category: category });
         } else {
             categoryModel.checkCategoryExists(req.body.name, category_id).then(function(result) {
                 if (result.length > 0) {
-                    response.msg = "Category '<b>" + req.body.name + "</b>' already exists!";
+                    message = "Category '<b>" + req.body.name + "</b>' already exists!";
+                    req.flash('type', 'danger');
+                    req.flash('icon', 'error');
+                    req.flash('message', message);
                     res.render('category/edit', { response: response, params: req.body, category: category });
                 } else {
                     var currentDate = category_controller.getCurrentDate();
                     var categoryData = { name: req.body.name, status: req.body.status, updated_at: currentDate };
                     categoryModel.updateCategory(categoryData, category_id).then(function(result) {
-                        response.success = true;
-                        response.msg = "Category updated successfully!";
+                        message = "Category updated successfully!";
+                        req.flash('type', 'success');
+                        req.flash('icon', 'success');
+                        req.flash('message', message);
                         res.redirect('/category/');
                     }).catch(function(error) {
-                        response.msg = "Unable to update Category!";
+                        message = "Unable to update Category!";
+                        req.flash('type', 'danger');
+                        req.flash('icon', 'error');
+                        req.flash('message', message);
                         res.render('category/edit', { response: response, params: req.body, category: category });
                     });
                 }
@@ -149,14 +185,14 @@ var category_controller = {
         categoryModel.deleteCategory(category_id).then(function(result) {
             if (result) {
                 response.success = true;
-                response.msg = "Category deleted successfully";
+                response.msg = "Your category record has been deleted.";
                 res.json(response);
             } else {
-                response.msg = "Unable to delete the category!";
+                response.msg = "Unable to delete this category!";
                 res.json(response);
             }
         }).catch(function(error) {
-            response.msg = "Unable to delete the category!";
+            response.msg = "Unable to delete this category!";
             res.json(response);
         });
     },

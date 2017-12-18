@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var cors = require('cors');
 var expressValidator = require('express-validator');
+var flash = require('express-flash');
 
 //******  Initialize app ***************//
 var app = express();
@@ -15,6 +16,7 @@ var app = express();
 //***  session middleware ****/
 app.use(cookieParser());
 app.use(session({ secret: 'mySecretKey', resave: true, saveUninitialized: true }));
+app.use(flash());
 
 //******** include database ********//
 var db = require('./config/database.js');

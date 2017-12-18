@@ -1,0 +1,44 @@
+.table>thead>tr>th,
+.table>tbody>tr>th,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>tbody>tr>td,
+.table>tfoot>tr>td {
+    vertical-align: middle;
+}
+
+/*ul.pagination {
+    margin: 0;
+}*/
+
+.sort {
+    display: block;
+}
+
+/*#sidebar {
+    height: 100%
+}*/
+
+/*p,
+.table,
+.alert,
+.carousel {
+    margin-bottom: 10px;
+}
+
+.panel-primary {
+    border-color: #2792bf;
+}
+
+.panel-primary>.panel-heading {
+    background-color: #2792bf;
+    border-color: #2792bf;
+}
+
+.panel-primary>.panel-heading a {
+    color: #fff;
+}*/
+
+ul.pagination {
+    margin-bottom: 0;
+}

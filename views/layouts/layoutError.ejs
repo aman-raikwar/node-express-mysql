@@ -1,43 +1,55 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
     <title>NodeExpress</title>
-    <meta name="description" content="ProUI is a Responsive Bootstrap Admin Template created by pixelcave and published on Themeforest.">
-    <meta name="author" content="pixelcave">
-    <meta name="robots" content="noindex, nofollow">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="shortcut icon" href="/images/favicon.png">
-    <link rel="apple-touch-icon" href="/images/icon57.png" sizes="57x57">
-    <link rel="apple-touch-icon" href="/images/icon72.png" sizes="72x72">
-    <link rel="apple-touch-icon" href="/images/icon76.png" sizes="76x76">
-    <link rel="apple-touch-icon" href="/images/icon114.png" sizes="114x114">
-    <link rel="apple-touch-icon" href="/images/icon120.png" sizes="120x120">
-    <link rel="apple-touch-icon" href="/images/icon144.png" sizes="144x144">
-    <link rel="apple-touch-icon" href="/images/icon152.png" sizes="152x152">
-    <link rel="apple-touch-icon" href="/images/icon180.png" sizes="180x180">
-    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
-    <link rel="stylesheet" href="/stylesheets/plugins.css">
-    <link rel="stylesheet" href="/stylesheets/main.css">
-    <link rel="stylesheet" href="/stylesheets/themes.css">
-    <script src="/javascripts/modernizr.min.js"></script>
+    <!-- Bootstrap Core CSS -->
+    <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+    <!-- You can change the theme colors from here -->
+    <link href="css/colors/blue.css" id="theme" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
 
-<body>
-    <div id="page-content">
-        <%- defineContent('errorContent') %>
-    </div>
-    <div class="container">
-        <%- defineContent('index') %>
-    </div>
-    <div>
-        <%- defineContent('login') %>
-    </div>
-    <script src="/javascripts/jquery.min.js"></script>
-    <script src="/javascripts/jquery.validate.min.js"></script>
-    <script src="/javascripts/bootstrap.min.js"></script>
-    <script src="/javascripts/plugins.js"></script>
+<body class="fix-header card-no-border">
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <section id="wrapper" class="error-page">
+        <div class="error-box">
+            <div class="error-body text-center">
+                <%- defineContent('errorContent') %>
+                <a href="/" class="btn btn-info btn-rounded waves-effect waves-light m-b-40">Back to home</a> 
+            </div>
+            <footer class="footer text-center">© 2017 Material Pro.</footer>
+        </div>
+    </section>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="assets/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="assets/plugins/bootstrap/js/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--Wave Effects -->
+    <script src="js/waves.js"></script>
 </body>
 
 </html>
