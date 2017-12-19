@@ -7,38 +7,14 @@
     vertical-align: middle;
 }
 
-/*ul.pagination {
-    margin: 0;
-}*/
-
 .sort {
     display: block;
 }
 
-/*#sidebar {
-    height: 100%
-}*/
-
-/*p,
-.table,
-.alert,
-.carousel {
-    margin-bottom: 10px;
-}
-
-.panel-primary {
-    border-color: #2792bf;
-}
-
-.panel-primary>.panel-heading {
-    background-color: #2792bf;
-    border-color: #2792bf;
-}
-
-.panel-primary>.panel-heading a {
-    color: #fff;
-}*/
-
 ul.pagination {
+    margin-bottom: 0;
+}
+
+.card-body .table {
     margin-bottom: 0;
 }
