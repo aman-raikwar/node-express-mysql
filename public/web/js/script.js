@@ -1,5 +1,5 @@
 $(function() {
-    if (typeof messages.icon != 'undefined' && messages.icon != '') {
+    if (typeof messages != 'undefined' && messages != '') {
         console.log(messages);
         $.toast({
             heading: 'Ca',

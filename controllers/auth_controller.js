@@ -1,40 +1,72 @@
 var fs = require('fs');
+var md5 = require('md5');
 var authModel = require('../models/auth_model.js');
 
 var auth_controller = {
 
     actionSignIn: function(req, res, next) {
-        var response = { success: false, msg: "" };
         var params = req.body;
-        res.render('auth/sign-in', { response: response, params: params });
+        req.flash('icon', '');
+        req.flash('type', '');
+        req.flash('message', '');
+        res.render('auth/sign-in', { params: params });
     },
 
     actionSignInPost: function(req, res, next) {
-        var response = { success: false, msg: "" };
+        var message = "";
 
-        req.checkBody('name', 'Category name is required').notEmpty();
+        req.checkBody('username', 'Username is required').notEmpty();
+        req.checkBody('password', 'Password is required').notEmpty();
         var errors = req.validationErrors();
 
         if (errors) {
-            response.msg = "Please enter category name";
-            res.render('category/create', { response: response, params: req.body });
+            message = "";
+            req.flash('icon', 'error');
+            req.flash('type', 'danger');
+            req.flash('message', message);
+            res.render('auth/sign-in', { params: req.body });
         } else {
-            categoryModel.checkCategoryExists(req.body.name).then(function(result) {
-                if (result.length > 0) {
-                    response.msg = "Category '<b>" + req.body.name + "</b>' already exists!";
-                    res.render('category/create', { response: response, params: req.body });
+
+            var data = {
+                username: req.body.username,
+                password: req.body.password
+            };
+
+            authModel.getUserBy(data).then(function(result) {
+                if (typeof result == 'undefined') {
+                    message = "Invalid Username and Password!";
+                    req.flash('type', 'danger');
+                    req.flash('icon', 'error');
+                    req.flash('message', message);
+                    res.render('auth/sign-in', { params: req.body });
+                } else if (!result.is_email_verified) {
+                    message = "Your email address is not verified yet!";
+                    req.flash('type', 'danger');
+                    req.flash('icon', 'error');
+                    req.flash('message', message);
+                    res.render('auth/sign-in', { params: req.body });
+                } else if (md5(data.password) != result.password) {
+                    message = "Incorrect Password!";
+                    req.flash('type', 'danger');
+                    req.flash('icon', 'error');
+                    req.flash('message', message);
+                    res.render('auth/sign-in', { params: req.body });
                 } else {
-                    var currentDate = auth_controller.getCuurentDate();
-                    var category = { name: req.body.name, created_at: currentDate };
-                    categoryModel.addCategory(category).then(function(result) {
-                        response.success = true;
-                        response.msg = "Category added successfully!";
-                        res.redirect('/category/');
-                    }).catch(function(error) {
-                        response.msg = "Unable to add new Category!";
-                        res.render('category/create', { response: response, params: req.body });
-                    });
+                    userInfo = authModel.setUserInfo(result);
+                    // token = passportService.generateToken(userInfo);
+                    token = "aman";
+                    res.cookie('authorization', token);
+                    res.cookie('userInfo', userInfo);
+                    req.session.cookie.userInfo = userInfo;
+                    res.redirect('/');
                 }
+            }).catch(function(error) {
+                console.log(error);
+                message = "Unable to Sign In User!";
+                req.flash('type', 'danger');
+                req.flash('icon', 'error');
+                req.flash('message', message);
+                res.render('auth/sign-in', { params: req.body });
             });
         }
     },
@@ -109,6 +141,16 @@ var auth_controller = {
                 }
             });
         }
+    },
+
+    actionLogout: function(req, res) {
+        req.logOut();
+        req.session.destroy(function(err) {
+            req.session = null;
+            res.clearCookie('authorization');
+            res.clearCookie('userInfo');
+            res.redirect('/auth/sign-in');
+        });
     },
 
     getCurrentDate: function() {
