@@ -52,6 +52,11 @@ var auth_controller = {
                     req.flash('message', message);
                     res.render('auth/sign-in', { params: req.body });
                 } else {
+                    if (req.body.remember) {
+                        req.session.cookie.maxAge = 1000 * 60 * 3;
+                    } else {
+                        req.session.cookie.expires = false;
+                    }
                     userInfo = authModel.setUserInfo(result);
                     // token = passportService.generateToken(userInfo);
                     token = "aman";

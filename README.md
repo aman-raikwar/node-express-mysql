@@ -48,3 +48,8 @@ sql_mode = "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_
 3. sudo service mysql restart to restart MySQL
 
 This will disable ONLY_FULL_GROUP_BY for ALL users
+
+
+https://github.com/manjeshpv/node-express-passport-mysql/tree/master/scripts
+
+https://github.com/manjeshpv/node-express-passport-mysql
