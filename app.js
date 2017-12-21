@@ -11,14 +11,14 @@ var expressValidator = require('express-validator');
 var flash = require('express-flash');
 
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+require('./config/passport')(passport);
 
 //******  Initialize app ***************//
 var app = express();
 
 //***  session middleware ****/
 app.use(cookieParser());
-app.use(session({ secret: 'mySecretKey', resave: false, saveUninitialized: false }));
+app.use(session({ secret: 'mySecretKey', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());

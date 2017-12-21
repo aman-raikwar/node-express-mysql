@@ -9,7 +9,7 @@ var auth_controller = {
         req.flash('icon', '');
         req.flash('type', '');
         req.flash('message', '');
-        res.render('auth/sign-in', { params: params });
+        res.render('auth/sign-in', { params: params, message: req.flash('loginMessage') });
     },
 
     actionSignInPost: function(req, res, next) {
@@ -63,6 +63,7 @@ var auth_controller = {
                     res.cookie('authorization', token);
                     res.cookie('userInfo', userInfo);
                     req.session.cookie.userInfo = userInfo;
+                    console.log(req.isAuthenticated());
                     res.redirect('/');
                 }
             }).catch(function(error) {
@@ -79,7 +80,7 @@ var auth_controller = {
     actionSignUp: function(req, res, next) {
         var response = { success: false, msg: "" };
         var params = req.body;
-        res.render('auth/sign-up', { response: response, params: params });
+        res.render('auth/sign-up', { response: response, params: params, message: req.flash('signupMessage') });
     },
 
     actionSignUpPost: function(req, res, next) {
