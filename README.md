@@ -64,3 +64,9 @@ https://stackoverflow.com/questions/30419175/node-js-passing-parameters-to-my-re
 # https://stackoverflow.com/questions/38162647/restrict-login-page-access-if-user-isloggedin-using-node-and-express
 
 # http://www.passportjs.org/docs/authenticate/
+
+
+# https://community.c9.io/t/setting-up-phpmyadmin/1723
+# Open phpMyAdmin and select the SQL tab. Then type this command:
+
+SET PASSWORD FOR root@localhost = PASSWORD('your_root_password');
