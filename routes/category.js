@@ -1,11 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var categoryController = require('../controllers/category_controller');
+var CategoryController = require('../controllers/CategoryController');
 
 // route middleware to make sure
 function isLoggedIn(req, res, next) {
     // if user is authenticated in the session, carry on
-    console.log(req.isAuthenticated());
     if (req.isAuthenticated())
         return next();
 
@@ -17,18 +16,18 @@ router.all('/', isLoggedIn, function(req, res, next) {
     next();
 });
 
-router.get('/', categoryController.actionIndex);
+router.get('/', CategoryController.actionIndex);
 
-router.get('/show/:category_id', categoryController.actionShow);
+router.get('/show/:category_id', CategoryController.actionShow);
 
-router.get('/create', categoryController.actionCreate);
-router.post('/create', categoryController.actionStore);
+router.get('/create', CategoryController.actionCreate);
+router.post('/create', CategoryController.actionStore);
 
-router.get('/edit/:category_id', categoryController.actionEdit);
-router.post('/edit/:category_id', categoryController.actionUpdate);
+router.get('/edit/:category_id', CategoryController.actionEdit);
+router.post('/edit/:category_id', CategoryController.actionUpdate);
 
-router.delete('/delete/:category_id', categoryController.actionDelete);
+router.delete('/delete/:category_id', CategoryController.actionDelete);
 
-router.get('/fake-data', categoryController.actionFakeData);
+router.get('/all-categories', CategoryController.actionAllCategories);
 
 module.exports = router;

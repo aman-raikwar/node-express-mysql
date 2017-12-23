@@ -1,8 +1,8 @@
 var fs = require('fs');
-var categoryModel = require('../models/category_model.js');
-var faker = require('faker');
+var Category = require('../models/Category');
+var commonHelper = require('../helper/common_helper.js');
 
-var category_controller = {
+var CategoryController = {
 
     actionIndex: function(req, res, next) {
         var limit = 10;
@@ -24,15 +24,16 @@ var category_controller = {
             status: req.query.status
         };
 
-        categoryModel.countCategory(searchParams).then(function(result) {
+        Category.countCategory(searchParams).then(function(result) {
             total = result[0].total;
 
-            categoryModel.getCategories(limit, offset, searchParams, orderParams).then(function(result) {
+            Category.getCategories(limit, offset, searchParams, orderParams).then(function(result) {
                 res.render('category/index', {
                     categories: result,
                     current: page,
                     pages: Math.ceil(total / limit),
-                    params: req.query
+                    params: req.query,
+                    user: req.user
                 });
             });
         });
@@ -43,23 +44,20 @@ var category_controller = {
         var message = "Unable to show the Record!";
 
         if (typeof category_id != 'undefined' && category_id != '') {
-            categoryModel.singleCategory(category_id).then(function(result) {
+            Category.singleCategory(category_id).then(function(result) {
                 if (typeof result != 'undefined' && result != '') {
-                    res.render('category/show', { category: result });
+                    res.render('category/show', { category: result, params: req.body, user: req.user });
                 } else {
-                    req.flash('icon', 'error');
                     req.flash('type', 'danger');
                     req.flash('message', message);
                     res.redirect('/category/');
                 }
             }).catch(function(error) {
-                req.flash('icon', 'error');
                 req.flash('type', 'danger');
                 req.flash('message', message);
                 res.redirect('/category/');
             });
         } else {
-            req.flash('icon', 'error');
             req.flash('type', 'danger');
             req.flash('message', message);
             res.redirect('/category/');
@@ -67,11 +65,9 @@ var category_controller = {
     },
 
     actionCreate: function(req, res, next) {
-        var params = req.body;
-        req.flash('icon', '');
         req.flash('type', '');
         req.flash('message', '');
-        res.render('category/create', { params: params });
+        res.render('category/create', { params: req.body, user: req.user });
     },
 
     actionStore: function(req, res, next) {
@@ -82,33 +78,29 @@ var category_controller = {
 
         if (errors) {
             message = "Please enter category name";
-            req.flash('icon', 'error');
             req.flash('type', 'danger');
             req.flash('message', message);
-            res.render('category/create', { params: req.body });
+            res.render('category/create', { params: req.body, user: req.user });
         } else {
-            categoryModel.checkCategoryExists(req.body.name).then(function(result) {
+            Category.checkCategoryExists(req.body.name).then(function(result) {
                 if (result.length > 0) {
                     message = "Category '<b>" + req.body.name + "</b>' already exists!";
-                    req.flash('icon', 'error');
                     req.flash('type', 'danger');
                     req.flash('message', message);
-                    res.render('category/create', { params: req.body });
+                    res.render('category/create', { params: req.body, user: req.user });
                 } else {
-                    var currentDate = category_controller.getCurrentDate();
+                    var currentDate = commonHelper.getCurrentDateTime();
                     var category = { name: req.body.name, created_at: currentDate };
-                    categoryModel.addCategory(category).then(function(result) {
+                    Category.addCategory(category).then(function(result) {
                         message = "Category added successfully!";
                         req.flash('type', 'success');
-                        req.flash('icon', 'success');
                         req.flash('message', message);
                         res.redirect('/category/');
                     }).catch(function(error) {
                         message = "Unable to add new Category!";
                         req.flash('type', 'danger');
-                        req.flash('icon', 'error');
                         req.flash('message', message);
-                        res.render('category/create', { params: req.body });
+                        res.render('category/create', { params: req.body, user: req.user });
                     });
                 }
             });
@@ -119,13 +111,12 @@ var category_controller = {
         var category_id = req.params.category_id;
 
         if (typeof category_id != 'undefined' && category_id != '') {
-            categoryModel.singleCategory(category_id).then(function(result) {
-                res.render('category/edit', { category: result });
+            Category.singleCategory(category_id).then(function(result) {
+                res.render('category/edit', { category: result, params: req.body, user: req.user });
             });
         } else {
             var message = "Unable to edit Category!";
             req.flash('type', 'danger');
-            req.flash('icon', 'error');
             req.flash('message', message);
             res.redirect('/category/');
         }
@@ -136,7 +127,7 @@ var category_controller = {
         var category_id = req.params.category_id;
         var category = {};
 
-        categoryModel.singleCategory(category_id).then(function(result) {
+        Category.singleCategory(category_id).then(function(result) {
             category = result;
         });
 
@@ -146,32 +137,28 @@ var category_controller = {
         if (errors) {
             message = "Please enter category name";
             req.flash('type', 'danger');
-            req.flash('icon', 'error');
             req.flash('message', message);
-            res.render('category/edit', { category: category });
+            res.render('category/edit', { category: category, params: req.body, user: req.user });
         } else {
-            categoryModel.checkCategoryExists(req.body.name, category_id).then(function(result) {
+            Category.checkCategoryExists(req.body.name, category_id).then(function(result) {
                 if (result.length > 0) {
                     message = "Category '<b>" + req.body.name + "</b>' already exists!";
                     req.flash('type', 'danger');
-                    req.flash('icon', 'error');
                     req.flash('message', message);
-                    res.render('category/edit', { response: response, params: req.body, category: category });
+                    res.render('category/edit', { response: response, params: req.body, category: category, user: req.user });
                 } else {
-                    var currentDate = category_controller.getCurrentDate();
+                    var currentDate = commonHelper.getCurrentDateTime();
                     var categoryData = { name: req.body.name, status: req.body.status, updated_at: currentDate };
-                    categoryModel.updateCategory(categoryData, category_id).then(function(result) {
+                    Category.updateCategory(categoryData, category_id).then(function(result) {
                         message = "Category updated successfully!";
                         req.flash('type', 'success');
-                        req.flash('icon', 'success');
                         req.flash('message', message);
                         res.redirect('/category/');
                     }).catch(function(error) {
                         message = "Unable to update Category!";
                         req.flash('type', 'danger');
-                        req.flash('icon', 'error');
                         req.flash('message', message);
-                        res.render('category/edit', { response: response, params: req.body, category: category });
+                        res.render('category/edit', { response: response, params: req.body, category: category, user: req.user });
                     });
                 }
             });
@@ -182,7 +169,7 @@ var category_controller = {
         var response = { success: false, msg: "" };
         var category_id = req.params.category_id;
 
-        categoryModel.deleteCategory(category_id).then(function(result) {
+        Category.deleteCategory(category_id).then(function(result) {
             if (result) {
                 response.success = true;
                 response.msg = "Your category record has been deleted.";
@@ -197,33 +184,24 @@ var category_controller = {
         });
     },
 
-    getCurrentDate: function() {
-        var date = new Date();
-        var curmonth = (date.getMonth() + 1);
-        if (curmonth < 10)
-            curmonth = "0" + curmonth;
-        var curDate = date.getDate();
-        if (curDate < 10)
-            curDate = "0" + curDate;
-        var dbdate = date.getFullYear() + "-" + curmonth + "-" + curDate + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-        return dbdate;
-    },
-
-    actionFakeData: function(req, res, next) {
-        for (var i = 0; i < 90; i++) {
-            var currentDate = category_controller.getCurrentDate();
-            var category = { name: faker.commerce.productName(), created_at: currentDate };
-
-            categoryModel.addCategory(category).then(function(result) {
-                console.log('Success:', result);
-            }).catch(function(error) {
-                console.log('Error:', error);
-            });
-        }
-
-        res.redirect('/category/');
+    actionAllCategories: function(req, res, next) {
+        var response = { success: false, msg: "", data: [] };
+        Category.getAllCategories().then(function(result) {
+            if (result) {
+                response.success = true;
+                response.msg = "Categories found!";
+                response.data = result;
+                res.json(response);
+            } else {
+                response.msg = "Unable to get categories!";
+                res.json(response);
+            }
+        }).catch(function(error) {
+            response.msg = "Unable to get categories!";
+            res.json(response);
+        });
     }
 
 }
 
-module.exports = category_controller;
+module.exports = CategoryController;

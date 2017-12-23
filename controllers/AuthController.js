@@ -1,8 +1,8 @@
 var fs = require('fs');
 var md5 = require('md5');
-var authModel = require('../models/auth_model.js');
+var Auth = require('../models/Auth');
 
-var auth_controller = {
+var AuthController = {
 
     actionSignIn: function(req, res, next) {
         var params = req.body;
@@ -32,7 +32,7 @@ var auth_controller = {
                 password: req.body.password
             };
 
-            authModel.getUserBy(data).then(function(result) {
+            Auth.getUserBy(data).then(function(result) {
                 if (typeof result == 'undefined') {
                     message = "Invalid Username and Password!";
                     req.flash('type', 'danger');
@@ -57,7 +57,7 @@ var auth_controller = {
                     } else {
                         req.session.cookie.expires = false;
                     }
-                    userInfo = authModel.setUserInfo(result);
+                    userInfo = Auth.setUserInfo(result);
                     // token = passportService.generateToken(userInfo);
                     token = "aman";
                     res.cookie('authorization', token);
@@ -98,7 +98,7 @@ var auth_controller = {
                     response.msg = "Category '<b>" + req.body.name + "</b>' already exists!";
                     res.render('category/create', { response: response, params: req.body });
                 } else {
-                    var currentDate = auth_controller.getCuurentDate();
+                    var currentDate = commonHelper.getCurrentDateTime();
                     var category = { name: req.body.name, created_at: currentDate };
                     categoryModel.addCategory(category).then(function(result) {
                         response.success = true;
@@ -134,7 +134,7 @@ var auth_controller = {
                     response.msg = "Category '<b>" + req.body.name + "</b>' already exists!";
                     res.render('category/create', { response: response, params: req.body });
                 } else {
-                    var currentDate = auth_controller.getCuurentDate();
+                    var currentDate = commonHelper.getCurrentDateTime();
                     var category = { name: req.body.name, created_at: currentDate };
                     categoryModel.addCategory(category).then(function(result) {
                         response.success = true;
@@ -157,20 +157,8 @@ var auth_controller = {
             res.clearCookie('userInfo');
             res.redirect('/auth/sign-in');
         });
-    },
-
-    getCurrentDate: function() {
-        var date = new Date();
-        var curmonth = (date.getMonth() + 1);
-        if (curmonth < 10)
-            curmonth = "0" + curmonth;
-        var curDate = date.getDate();
-        if (curDate < 10)
-            curDate = "0" + curDate;
-        var dbdate = date.getFullYear() + "-" + curmonth + "-" + curDate + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-        return dbdate;
     }
 
 }
 
-module.exports = auth_controller;
+module.exports = AuthController;

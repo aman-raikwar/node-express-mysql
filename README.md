@@ -53,3 +53,14 @@ This will disable ONLY_FULL_GROUP_BY for ALL users
 https://github.com/manjeshpv/node-express-passport-mysql/tree/master/scripts
 
 https://github.com/manjeshpv/node-express-passport-mysql
+
+
+
+
+ # Use for passport authentication
+https://stackoverflow.com/questions/30419175/node-js-passing-parameters-to-my-require-function-in-express-js-passport-js-und
+
+
+# https://stackoverflow.com/questions/38162647/restrict-login-page-access-if-user-isloggedin-using-node-and-express
+
+# http://www.passportjs.org/docs/authenticate/

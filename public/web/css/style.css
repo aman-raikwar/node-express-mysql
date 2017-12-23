@@ -18,3 +18,7 @@ ul.pagination {
 .card-body .table {
     margin-bottom: 0;
 }
+
+.topbar ul.dropdown-user {
+    width: 300px;
+}

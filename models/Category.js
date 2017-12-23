@@ -3,7 +3,7 @@ var mysql = require('mysql');
 var db = require('../config/database.js');
 var Q = require("q");
 
-var categoryModel = {
+var Category = {
 
     checkCategoryExists: function(name, category_id) {
         var deferred = Q.defer();
@@ -150,6 +150,18 @@ var categoryModel = {
         return deferred.promise;
     },
 
+    getAllCategories: function() {
+        var deferred = Q.defer();
+        var query = "SELECT id, name FROM tbl_categories WHERE is_deleted = 0 AND status = 1 ORDER BY name;";
+        db.connection.query(query, function(err, rows) {
+            if (err) {
+                deferred.reject(new Error(err));
+            }
+            deferred.resolve(rows);
+        });
+        return deferred.promise;
+    },
+
 };
 
-module.exports = categoryModel;
+module.exports = Category;

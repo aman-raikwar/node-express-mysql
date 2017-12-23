@@ -1,17 +1,17 @@
 <%- contentFor('breadcrumbContent') %>
     <div class="row page-titles">
         <div class="col-md-5 col-8 align-self-center">
-            <h3 class="text-themecolor">Show Category</h3>
+            <h3 class="text-themecolor">Show Skill</h3>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item"><a href="/category">Categories</a></li>
-                <li class="breadcrumb-item active">Show Category</li>
+                <li class="breadcrumb-item"><a href="/skill">Skills</a></li>
+                <li class="breadcrumb-item active">Show Skill</li>
             </ol>
         </div>
         <div class="col-md-7 col-4 align-self-center">
             <div class="d-flex m-t-10 justify-content-end">
                 <div class="d-flex m-r-20 m-l-10 hidden-md-down">
-                    <a href="/category/" class="pull-right"><i class="fa fa-plus"></i> List of Categories</a>
+                    <a href="/skill/" class="pull-right"><i class="fa fa-plus"></i> List of Skills</a>
                 </div>
                 <div class="">
                     <button class="right-side-toggle waves-effect waves-light btn-success btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
@@ -27,13 +27,17 @@
             <div class="card-body">
                 <table class="table table-hover">
                     <tr>
-                        <th width="150px;">Name</th>
-                        <td><%= category.name %></td>
+                        <th width="150px;">Category</th>
+                        <td><%= skill.category_name %></td>
+                    </tr>
+                    <tr>
+                        <th>Name</th>
+                        <td><%= skill.name %></td>
                     </tr>
                     <tr>
                         <th>Status</th>
                         <td>
-                            <% if(category.status == 1) { %>
+                            <% if(skill.status == 1) { %>
                                 <label class="label label-success">Active</label>
                             <% } else { %>
                                 <label class="label label-danger">In-active</label>
@@ -41,20 +45,14 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Created At</td>
-                        <td><%= category.created_at %></td>
+                        <th>Created At</th>
+                        <td><%= skill.created_at %></td>
                     </tr>
                     <tr>
                         <th>Updated At</th>
-                        <td><%= category.updated_at %></td>
+                        <td><%= skill.updated_at %></td>
                     </tr>
                 </table>
             </div>
         </div>
     </div>   
-
-    <script type="text/javascript">
-        var params = JSON.parse('<%- JSON.stringify(params) %>');
-        var messages = JSON.parse('<%- JSON.stringify(messages) %>');
-    </script>
-    <script type="text/javascript" src="/web/js/category.js"></script>

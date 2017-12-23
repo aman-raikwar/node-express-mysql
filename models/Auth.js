@@ -3,7 +3,7 @@ var mysql = require('mysql');
 var db = require('../config/database.js');
 var Q = require("q");
 
-var authModel = {
+var Auth = {
 
     getUserBy: function(data) {
         var deferred = Q.defer();
@@ -36,4 +36,4 @@ var authModel = {
 
 };
 
-module.exports = authModel;
+module.exports = Auth;
