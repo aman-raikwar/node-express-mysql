@@ -31,6 +31,7 @@ var indexRoute = require('./routes/index');
 var authRoute = require('./routes/auth');
 var categoryRoute = require('./routes/category');
 var skillRoute = require('./routes/skill');
+var userRoute = require('./routes/user');
 
 app.use(expressValidator());
 
@@ -89,6 +90,7 @@ app.use('/', indexRoute);
 app.use('/auth', authRoute);
 app.use('/category', categoryRoute);
 app.use('/skill', skillRoute);
+app.use('/users', userRoute);
 
 
 //*** catch 404 and forward to error handler *****//

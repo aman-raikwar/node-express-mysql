@@ -1,17 +1,13 @@
 // Import mysql module
 var mysql = require('mysql');
+var dbconfig = require('../config/config');
 
 /**
  * Create database connection
  */
 
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'node-express',
-    multipleStatements: true,
-});
+dbconfig.connection.database = dbconfig.database;
+var connection = mysql.createConnection(dbconfig.connection);
 
 /**
  * Check for error in database connection

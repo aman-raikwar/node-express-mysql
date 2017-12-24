@@ -1,0 +1,92 @@
+<%- contentFor('breadcrumbContent') %>
+    <div class="row page-titles">
+        <div class="col-md-5 col-8 align-self-center">
+            <h3 class="text-themecolor">Show User</h3>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/users/">Users</a></li>
+                <li class="breadcrumb-item active">Show User</li>
+            </ol>
+        </div>
+        <div class="col-md-7 col-4 align-self-center">
+            <div class="d-flex m-t-10 justify-content-end">
+                <div class="d-flex m-r-20 m-l-10 hidden-md-down">
+                    <a href="/users/" class="pull-right"><i class="fa fa-plus"></i> List of Users</a>
+                </div>
+                <div class="">
+                    <button class="right-side-toggle waves-effect waves-light btn-success btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<%- contentFor('pageContent') %>
+    
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-hover">
+                    <tr>
+                        <th width="150px;">Username</th>
+                        <td><%= singleUser.username %></td>
+                    </tr>
+                    <tr>
+                        <th width="150px;">Email</th>
+                        <td><%= singleUser.email %></td>
+                    </tr>
+                    <tr>
+                        <th width="150px;">First Name</th>
+                        <td><%= singleUser.first_name %></td>
+                    </tr>
+                    <tr>
+                        <th width="150px;">Last Name</th>
+                        <td><%= singleUser.last_name %></td>
+                    </tr>
+                    <tr>
+                        <th width="150px;">About Me</th>
+                        <td><%= singleUser.about_me %></td>
+                    </tr>
+                    <tr>
+                        <th width="150px;">Position</th>
+                        <td><%= singleUser.position %></td>
+                    </tr>
+                    <tr>
+                        <th width="150px;">Phone</th>
+                        <td><%= singleUser.phone %></td>
+                    </tr>
+                    <tr>
+                        <th width="150px;">Location</th>
+                        <td><%= singleUser.location %></td>
+                    </tr>
+                    <tr>
+                        <th width="150px;">Role</th>
+                        <td><%= singleUser.role_name %></td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            <% if(singleUser.status == 1) { %>
+                                <label class="label label-success">Active</label>
+                            <% } else { %>
+                                <label class="label label-danger">In-active</label>
+                            <% } %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Created At</td>
+                        <td><%= singleUser.created_at %></td>
+                    </tr>
+                    <tr>
+                        <th>Updated At</th>
+                        <td><%= singleUser.updated_at %></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>   
+
+    <script type="text/javascript">
+        var params = JSON.parse('<%- JSON.stringify(params) %>');
+        var messages = JSON.parse('<%- JSON.stringify(messages) %>');
+    </script>
+    <script type="text/javascript" src="/web/js/user.js"></script>

@@ -19,7 +19,6 @@
     "express-flash": "0.0.2",
     "express-session": "^1.15.6",
     "express-validator": "^4.3.0",
-    "faker": "^4.1.0",
     "md5": "^2.2.1",
     "method-override": "^2.3.10",
     "moment": "^2.20.1",

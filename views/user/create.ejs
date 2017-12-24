@@ -1,0 +1,103 @@
+<%- contentFor('breadcrumbContent') %>
+    <div class="row page-titles">
+        <div class="col-md-5 col-8 align-self-center">
+            <h3 class="text-themecolor">Add User</h3>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/users">Users</a></li>
+                <li class="breadcrumb-item active">Add User</li>
+            </ol>
+        </div>
+        <div class="col-md-7 col-4 align-self-center">
+            <div class="d-flex m-t-10 justify-content-end">
+                <div class="d-flex m-r-20 m-l-10 hidden-md-down">
+                    <a href="/users/" class="pull-right"><i class="fa fa-plus"></i> List of Users</a>
+                </div>
+                <div class="">
+                    <button class="right-side-toggle waves-effect waves-light btn-success btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<%- contentFor('pageContent') %>
+ 
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <% if(messages) { %>
+                    <div class="alert alert-<%- messages.type %>"><%- messages.message %></div>
+                <% } %>
+                <form class="form-horizontal form-material" method="post" action="/users/create" autocomplete="off">
+                    <fieldset>
+                        <legend>Account Information</legend>
+                        <div class="form-group">
+                            <label class="col-md-12">Username</label>
+                            <div class="col-md-12">
+                                <input type="text" placeholder="E.g. john" id="username" name="username" class="form-control form-control-line" value="<%= params.username %>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Email</label>
+                            <div class="col-md-12">
+                                <input type="text" placeholder="E.g. john@doe.com" id="email" name="email" class="form-control form-control-line" value="<%= params.email %>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Password</label>
+                            <div class="col-md-12">
+                                <input type="password" placeholder="E.g. ******" id="password" name="password" class="form-control form-control-line" value="<%= params.password %>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Confirm Password</label>
+                            <div class="col-md-12">
+                                <input type="password" placeholder="E.g. ******" id="confirm_password" name="confirm_password" class="form-control form-control-line" value="<%= params.confirm_password %>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Status</label>
+                            <div class="col-md-12">
+                                <select class="form-control form-control-line" name="status" id="status">
+                                    <option value="" <%= params.status == 1 ? 'selected' : '' %>>Select Status</option>
+                                    <option value="1" <%= params.status == 1 ? 'selected' : '' %>>Active</option>
+                                    <option value="0" <%= params.status == 0 ? 'selected' : '' %>>Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Role</label>
+                            <div class="col-md-12">
+                                <select class="form-control form-control-line" name="role" id="role">
+                                    <option value="" <%= params.role == 1 ? 'selected' : '' %>>Select Role</option>
+                                    <option value="1" <%= params.role == 1 ? 'selected' : '' %>>Administrator</option>                                
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Profile Photo</legend>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Personal Information</legend>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Address Information</legend>
+                    </fieldset>
+                    
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <button type="reset" class="btn btn-warning">Reset</button>
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var params = JSON.parse('<%- JSON.stringify(params) %>');
+        var messages = JSON.parse('<%- JSON.stringify(messages) %>');
+    </script>
+    <script type="text/javascript" src="/web/js/user.js"></script>
