@@ -1,0 +1,13 @@
+<% if(typeof messages.type !='undefined' && messages.type !='') { %>
+    <div class="alert alert-<%- messages.type %>"><%- messages.message %></div>
+<% } %>
+
+<% if(typeof errors !='undefined' && errors !='') { %>
+	<% if(errors.length > 0) { %>
+		<div class="alert alert-danger">
+			<% for(var i = 0; i < errors.length; i++) { %>
+				<p><%- errors[i].msg %></p>
+			<% } %>
+		</div>
+	<% } %>		
+<% } %>

@@ -1,0 +1,5 @@
+<select class="form-control <%- filterColumn %>-change" name="<%- filterColumn %>" id="<%- filterColumn %>">
+    <option value="" <%= filterValue == '' ? 'selected' : '' %>>Status</option>
+    <option value="1" <%= filterValue == 1 ? 'selected' : '' %>>Active</option>
+    <option value="0" <%= filterValue == 0 ? 'selected' : '' %>>Inactive</option>
+</select>

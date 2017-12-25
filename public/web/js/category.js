@@ -1,7 +1,12 @@
+// Website Url
 var path = window.location.origin + window.location.pathname;
+
+// Search Params
 var idParam = params.id;
 var nameParam = params.name;
 var statusParam = params.status;
+
+// Order Column and Order By
 var orderColumnParam = params.orderColumn;
 var orderByParam = params.orderBy;
 
@@ -68,35 +73,19 @@ function getParams() {
     var pathParams = '';
 
     if (typeof idParam != 'undefined' && idParam != '') {
-        if (pathParams != '') {
-            pathParams += '&name=' + idParam;
-        } else {
-            pathParams += '?name=' + idParam;
-        }
+        pathParams += ((pathParams != '') ? '&id=' : '?id=') + idParam;
     }
 
     if (typeof nameParam != 'undefined' && nameParam != '') {
-        if (pathParams != '') {
-            pathParams += '&name=' + nameParam;
-        } else {
-            pathParams += '?name=' + nameParam;
-        }
+        pathParams += ((pathParams != '') ? '&name=' : '?name=') + nameParam;
     }
 
     if (typeof statusParam != 'undefined' && statusParam != '') {
-        if (pathParams != '') {
-            pathParams += '&status=' + statusParam;
-        } else {
-            pathParams += '?status=' + statusParam;
-        }
+        pathParams += ((pathParams != '') ? '&status=' : '?status=') + statusParam;
     }
 
     if (typeof orderColumnParam != 'undefined' && orderColumnParam != '' && typeof orderByParam != 'undefined' && orderByParam != '') {
-        if (pathParams != '') {
-            pathParams += "&orderColumn=" + orderColumnParam + "&orderBy=" + orderByParam;
-        } else {
-            pathParams += "?orderColumn=" + orderColumnParam + "&orderBy=" + orderByParam;
-        }
+        pathParams += (pathParams != '') ? "&orderColumn=" + orderColumnParam + "&orderBy=" + orderByParam : "?orderColumn=" + orderColumnParam + "&orderBy=" + orderByParam;
     }
 
     return pathParams;

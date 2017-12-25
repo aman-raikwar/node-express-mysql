@@ -1,0 +1,26 @@
+<%- JSON.stringify(category) %>
+
+<form class="form-horizontal form-material" method="post" action="/category/create" autocomplete="off">
+    <div class="form-group">
+        <label class="col-md-12">Name</label>
+        <div class="col-md-12">
+            <input type="text" placeholder="E.g. Website Development" id="name" name="name" class="form-control form-control-line" value="<%- category.name %>">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-12">Status</label>
+        <div class="col-md-12">
+            <select class="form-control form-control-line" name="status" id="status">
+                <option value="" <%= category.status === '' ? 'selected' : '' %>>Select Status</option>
+                <option value="1" <%= category.status === 1 ? 'selected' : '' %>>Active</option>
+                <option value="0" <%= category.status === 0 ? 'selected' : '' %>>Inactive</option>                
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-12">
+            <button type="reset" class="btn btn-warning">Reset</button>
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    </div>
+</form>            

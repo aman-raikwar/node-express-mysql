@@ -5,24 +5,24 @@ var Q = require("q");
 
 var Category = {
 
-    checkCategoryExists: function(name, category_id) {
+    checkCategoryExists: function(name, id) {
         var deferred = Q.defer();
         var query = "SELECT id, name FROM tbl_categories WHERE ";
-        var data = { name: striptags(name) };
         var where = "";
 
         if (typeof name != 'undefined' && name != '') {
             where += " name = '" + striptags(name) + "'";
         }
 
-        if (typeof category_id != 'undefined' && category_id != '') {
-            where += " AND id != " + striptags(category_id);
-        } else {
-            where += " AND is_deleted = 0";
+        if (typeof id != 'undefined' && id != '' && id != 0) {
+            where += " AND id != " + striptags(id);
         }
+
+        where += " AND is_deleted = 0";
 
         query += where;
         query = mysql.format(query, where);
+        console.log(query);
 
         db.connection.query(query, function(err, rows) {
             if (err) {

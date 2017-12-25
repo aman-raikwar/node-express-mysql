@@ -22,3 +22,7 @@ ul.pagination {
 .topbar ul.dropdown-user {
     width: 300px;
 }
+
+.alert p {
+    margin: 0;
+}
