@@ -18,7 +18,7 @@ var app = express();
 
 //***  session middleware ****/
 app.use(cookieParser());
-app.use(session({ secret: 'mySecretKey', resave: true, saveUninitialized: true }));
+app.use(session({ secret: 'mySecretKey', resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
@@ -32,8 +32,6 @@ var authRoute = require('./routes/auth');
 var categoryRoute = require('./routes/category');
 var skillRoute = require('./routes/skill');
 var userRoute = require('./routes/user');
-
-app.use(expressValidator());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -51,6 +49,7 @@ app.use(logger('dev'));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(expressValidator());
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use('/nmd', express.static(path.join(__dirname, 'node_modules')));
 

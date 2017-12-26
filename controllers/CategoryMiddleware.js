@@ -6,18 +6,27 @@ var Category = require('../models/Category');
 
 module.exports = function(req, res, next) {
 
-    req.checkBody('name').withMessage('Name is required');
-    req.checkBody('name', 'Category is already exist').custom(req.body.name, function(req) {
-        //const db = require('../db');
-        db.connection.query('SELECT name FROM `tbl_categories` WHERE name = "' + req.body.name + '"', function(error, results, fields) {
-            if (error) throw error;
-            if (results.length > 0) {
-                return value !== results[0].name;
-            };
-        });
-    });
+    req.checkBody('name').notEmpty().withMessage('Name is required').custom(function(value, req) {
+        console.log(value);
+        if (value != '') {
+            var sql = 'SELECT name FROM `tbl_categories` WHERE name = "' + value + '" AND is_deleted=0';
+            db.connection.query(sql, function(error, results, fields) {
+                if (error) throw error;
+                console.log(results, value);
+                if (results.length > 0) {
+                    console.log(results[0].name);
+                    return value === results[0].name;
+                } else {
+                    return true;
+                }
+            });
+        } else {
+            return true;
+        }
+    }).withMessage('Category already exists');
 
-    req.checkBody('status').withMessage('Status is required');
+    req.checkBody('status').notEmpty().withMessage('Status is required');
+
 
     var errors = req.validationErrors();
     if (errors) {

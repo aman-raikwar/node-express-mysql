@@ -72,17 +72,16 @@ var CategoryController = {
     actionStore: function(req, res, next) {
         var currentDate = commonHelper.getCurrentDateTime();
         var category = { name: req.body.name, status: req.body.status, created_at: currentDate };
-        console.log(category);
-        res.redirect('/category/');
-        // Category.addCategory(category).then(function(result) {
-        //     req.flash('type', 'success');
-        //     req.flash('message', "Category added successfully!");
-        //     res.redirect('/category/');
-        // }).catch(function(error) {
-        //     req.flash('type', 'danger');
-        //     req.flash('message', "Unable to add new Category!");
-        //     res.render('category/create', { category: category, user: req.user });
-        // });
+
+        Category.addCategory(category).then(function(result) {
+            req.flash('type', 'success');
+            req.flash('message', "Category added successfully!");
+            res.redirect('/category/');
+        }).catch(function(error) {
+            req.flash('type', 'danger');
+            req.flash('message', "Unable to add new Category!");
+            res.render('category/create', { category: category, user: req.user });
+        });
     },
 
     actionEdit: function(req, res, next) {
