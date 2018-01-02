@@ -1,0 +1,32 @@
+<form class="form-horizontal form-material" method="post" action="<%- action %>" autocomplete="off">
+    <div class="form-group">
+        <label class="col-md-12">Category</label>
+        <div class="col-md-12">
+            <select id="category" name="category_id" data-category="<%= skill.category_id %>" class="form-control form-control-line">
+                <option></option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-12">Name</label>
+        <div class="col-md-12">
+            <input type="text" placeholder="E.g. AngularJS" id="name" name="name" class="form-control form-control-line" value="<%- skill.name %>">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-12">Status</label>
+        <div class="col-md-12">
+            <select class="form-control form-control-line" name="status" id="status">
+                <option value="" <%= skill.status === '' ? 'selected' : '' %>>Select Status</option>
+                <option value="1" <%= skill.status === 1 ? 'selected' : '' %>>Active</option>
+                <option value="0" <%= skill.status === 0 ? 'selected' : '' %>>Inactive</option>                
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-12">
+            <button type="reset" class="btn btn-warning">Reset</button>
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    </div>
+</form>

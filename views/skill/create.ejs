@@ -1,61 +1,7 @@
 <%- contentFor('breadcrumbContent') %>
-    <div class="row page-titles">
-        <div class="col-md-5 col-8 align-self-center">
-            <h3 class="text-themecolor">Add Skill</h3>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item"><a href="/skill">Skills</a></li>
-                <li class="breadcrumb-item active">Add Skill</li>
-            </ol>
-        </div>
-        <div class="col-md-7 col-4 align-self-center">
-            <div class="d-flex m-t-10 justify-content-end">
-                <div class="d-flex m-r-20 m-l-10 hidden-md-down">
-                    <a href="/skill/" class="pull-right"><i class="fa fa-plus"></i> List of Skills</a>
-                </div>
-                <div class="">
-                    <button class="right-side-toggle waves-effect waves-light btn-success btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <%- include('../partials/breadcrumb', { title: 'Add Skill', options: [{name:'Skills', path:'/skill/'}], otherOption: '<i class="mdi mdi-view-list"></i> Back to Skills', otherOptionPath: '/skill/' }); %>
+    
 <%- contentFor('pageContent') %>
- 
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <% if(messages) { %>
-                    <div class="alert alert-<%- messages.type %>"><%- messages.message %></div>
-                <% } %>
-                <form class="form-horizontal form-material" method="post" action="/skill/create" autocomplete="off">
-                    <div class="form-group">
-                        <label class="col-md-12">Category</label>
-                        <div class="col-md-12">
-                            <select id="category" name="category" class="form-control form-control-line">
-                                <option></option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-12">Name</label>
-                        <div class="col-md-12">
-                            <input type="text" placeholder="E.g. Wordpress" id="name" name="name" class="form-control form-control-line" value="<%= params.name %>">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <button type="reset" class="btn btn-warning">Reset</button>
-                            <button type="submit" class="btn btn-success">Save</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <script type="text/javascript">
-        var params = JSON.parse('<%- JSON.stringify(params) %>');
-        var messages = JSON.parse('<%- JSON.stringify(messages) %>');
-    </script>
-    <script type="text/javascript" src="/web/js/skill.js"></script>
+    <%- include('../partials/message'); %>
+    <%- JSON.stringify(skill) %>
+    <%- include('_form', { action: '/skill/create' }) %>

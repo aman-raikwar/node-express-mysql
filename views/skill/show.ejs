@@ -1,58 +1,32 @@
 <%- contentFor('breadcrumbContent') %>
-    <div class="row page-titles">
-        <div class="col-md-5 col-8 align-self-center">
-            <h3 class="text-themecolor">Show Skill</h3>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item"><a href="/skill">Skills</a></li>
-                <li class="breadcrumb-item active">Show Skill</li>
-            </ol>
-        </div>
-        <div class="col-md-7 col-4 align-self-center">
-            <div class="d-flex m-t-10 justify-content-end">
-                <div class="d-flex m-r-20 m-l-10 hidden-md-down">
-                    <a href="/skill/" class="pull-right"><i class="fa fa-plus"></i> List of Skills</a>
-                </div>
-                <div class="">
-                    <button class="right-side-toggle waves-effect waves-light btn-success btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-<%- contentFor('pageContent') %>
+    <%- include('../partials/breadcrumb', { title: 'Show Skill', options: [{name:'Skills', path:'/skill/'}], otherOption: '<i class="mdi mdi-view-list"></i> Back to Skills', otherOptionPath: '/skill/' }); %>
     
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <table class="table table-hover">
-                    <tr>
-                        <th width="150px;">Category</th>
-                        <td><%= skill.category_name %></td>
-                    </tr>
-                    <tr>
-                        <th>Name</th>
-                        <td><%= skill.name %></td>
-                    </tr>
-                    <tr>
-                        <th>Status</th>
-                        <td>
-                            <% if(skill.status == 1) { %>
-                                <label class="label label-success">Active</label>
-                            <% } else { %>
-                                <label class="label label-danger">In-active</label>
-                            <% } %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Created At</th>
-                        <td><%= skill.created_at %></td>
-                    </tr>
-                    <tr>
-                        <th>Updated At</th>
-                        <td><%= skill.updated_at %></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>   
+<%- contentFor('pageContent') %>
+    <table class="table table-hover">
+        <tr>
+            <th width="150px;">Category</th>
+            <td><%= skill.category_name %></td>
+        </tr>
+        <tr>
+            <th width="150px;">Name</th>
+            <td><%= skill.name %></td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>
+                <% if(skill.status == 1) { %>
+                    <label class="label label-success">Active</label>
+                <% } else { %>
+                    <label class="label label-danger">In-active</label>
+                <% } %>
+            </td>
+        </tr>
+        <tr>
+            <th>Created At</td>
+            <td><%= skill.created_at %></td>
+        </tr>
+        <tr>
+            <th>Updated At</th>
+            <td><%= skill.updated_at %></td>
+        </tr>
+    </table>

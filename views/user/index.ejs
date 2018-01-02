@@ -1,229 +1,104 @@
+<% 
+if(role) { 
+    options = [{ name:'Users', path: '/users/' }];
+} else {
+    options = {};
+} 
+%>
+
 <%- contentFor('breadcrumbContent') %>
-    <div class="row page-titles">
-        <div class="col-md-5 col-8 align-self-center">
-            <h3 class="text-themecolor"><%- title %></h3>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <% if(typeof role !='undefined' && role !='') { %>
-                    <li class="breadcrumb-item"><a href="/users">Users</a></li>
-                <% } %>
-                <li class="breadcrumb-item active"><%- title %></li>
-            </ol>
-        </div>
-        <div class="col-md-7 col-4 align-self-center">
-            <div class="d-flex m-t-10 justify-content-end">
-                <div class="d-flex m-r-20 m-l-10 hidden-md-down">
-                    <a href="/users/create" class="pull-right"><i class="fa fa-plus"></i> User</a>
-                </div>
-                <div class="">
-                    <button class="right-side-toggle waves-effect waves-light btn-success btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <%- include('../partials/breadcrumb', { title: title, options: options, otherOption: '<i class="fa fa-plus"></i> Add User', otherOptionPath: '/user/create' }); %>
 
 <%- contentFor('pageContent') %>
-
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <% if(typeof messages.type !='undefined' && messages.type !='') { %>
-                        <div class="alert alert-<%- messages.type %>"><%- messages.message %></div>
-                    <% } %>
-                    <table class="table m-t-10 table-hover">
-                        <thead>
-                            <tr class="footable-odd">
-                                <th width="100px;" class="text-center">
-                                    <a href="javascript:void(0);" class="sort" data-type="id" data-sort="<%= params.orderColumn == 'id' ? (params.orderBy == 'ASC' ? 'DESC' : 'ASC') : 'ASC' %>">
-                                        S. No. 
-                                        <% if (params.orderColumn == 'id') {
-                                            if(params.orderBy == 'ASC') { %>
-                                                <i class="fa fa-sort-amount-asc pull-right"></i>
-                                            <% } else { %>
-                                                <i class="fa fa-sort-amount-desc pull-right"></i>
-                                                <%
-                                            }
-                                        } else { %>
-                                            <i class="fa fa-sort-amount-desc pull-right"></i>
-                                        <% } %>
-                                    </a>
-                                </th>
-                                <th>
-                                    <a href="javascript:void(0);" class="sort" data-type="username" data-sort="<%= params.orderColumn == 'username' ? (params.orderBy == 'ASC' ? 'DESC' : 'ASC') : 'ASC' %>">
-                                        Username
-                                        <% 
-                                        if (params.orderColumn == 'username') {
-                                            if(params.orderBy == 'ASC') {
-                                                %><i class="fa fa-sort-amount-asc pull-right"></i><%
-                                            } else {
-                                                %><i class="fa fa-sort-amount-desc pull-right"></i><%
-                                            }
-                                        } else {
-                                            %><i class="fa fa-sort-amount-desc pull-right"></i><%
-                                        } 
-                                        %>                                
-                                    </a>
-                                </th>
-                                <th>
-                                    <a href="javascript:void(0);" class="sort" data-type="email" data-sort="<%= params.orderColumn == 'email' ? (params.orderBy == 'ASC' ? 'DESC' : 'ASC') : 'ASC' %>">
-                                        Email
-                                        <% 
-                                        if (params.orderColumn == 'email') {
-                                            if(params.orderBy == 'ASC') {
-                                                %><i class="fa fa-sort-amount-asc pull-right"></i><%
-                                            } else {
-                                                %><i class="fa fa-sort-amount-desc pull-right"></i><%
-                                            }
-                                        } else {
-                                            %><i class="fa fa-sort-amount-desc pull-right"></i><%
-                                        } 
-                                        %>                                
-                                    </a>
-                                </th>
-                                <% if(typeof role != 'undefined' && role == 0) { %>
-                                <th>
-                                    <a href="javascript:void(0);" class="sort" data-type="role_id" data-sort="<%= params.orderColumn == 'role_id' ? (params.orderBy == 'ASC' ? 'DESC' : 'ASC') : 'ASC' %>">
-                                        Role
-                                        <% 
-                                        if (params.orderColumn == 'role_id') {
-                                            if(params.orderBy == 'ASC') {
-                                                %><i class="fa fa-sort-amount-asc pull-right"></i><%
-                                            } else {
-                                                %><i class="fa fa-sort-amount-desc pull-right"></i><%
-                                            }
-                                        } else {
-                                            %><i class="fa fa-sort-amount-desc pull-right"></i><%
-                                        } 
-                                        %>                                
-                                    </a>
-                                </th>
-                                <% } %>
-                                <th width="150px;" class="text-center">
-                                    <a href="javascript:void(0);" class="sort" data-type="status" data-sort="<%= params.orderColumn == 'status' ? (params.orderBy == 'ASC' ? 'DESC' : 'ASC') : 'ASC' %>">
-                                        Status
-                                        <% 
-                                        if (params.orderColumn == 'status') {
-                                            if(params.orderBy == 'ASC') {
-                                                %><i class="fa fa-sort-amount-asc pull-right"></i><%
-                                            } else {
-                                                %><i class="fa fa-sort-amount-desc pull-right"></i><%
-                                            }
-                                        } else {
-                                            %><i class="fa fa-sort-amount-desc pull-right"></i><%
-                                        } 
-                                        %>                                
-                                    </a>
-                                </th>
-                                <th width="150px;" class="text-center">Action</th>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <input type="text" class="form-control id-change" id="id" name="id" placeholder="Id" value="<%= params.id %>">
-                                </th>
-                                <th>
-                                    <input type="text" class="form-control username-change" id="username" name="username" placeholder="Username" value="<%= params.username %>">
-                                </th>
-                                <th>
-                                    <input type="text" class="form-control email-change" id="email" name="email" placeholder="Email" value="<%= params.email %>">
-                                </th>
-                                <% if(typeof role != 'undefined' && role == 0) { %>
-                                <th>
-                                    <select class="form-control role-change" name="role_id" id="role_id">
-                                        <option value="" <%= params.role == '' ? 'selected' : '' %>>Role</option>
-                                        <option value="1" <%= params.role == 1 ? 'selected' : '' %>>Administrators</option>
-                                        <option value="2" <%= params.role == 2 ? 'selected' : '' %>>Teachers</option>
-                                        <option value="3" <%= params.role == 3 ? 'selected' : '' %>>Students</option>
-                                    </select>
-                                </th>
-                                <% } %>
-                                <th>
-                                    <select class="form-control status-change" name="status" id="status">
-                                        <option value="" <%= params.status == '' ? 'selected' : '' %>>Status</option>
-                                        <option value="1" <%= params.status == 1 ? 'selected' : '' %>>Active</option>
-                                        <option value="0" <%= params.status == 0 ? 'selected' : '' %>>Inactive</option>
-                                    </select>
-                                </th>
-                                <th class="text-center">
-                                    <button class="btn btn-warning btn-sm reset-search">Reset</button>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% if(users.length) { %>
-                                <% for(var i = 0; i < users.length; i++) {%>
-                                    <tr class="<%= i%2 == 0 ? 'footable-odd' : 'footable-even' %> row-<%= users[i].id %>">
-                                        <td class="text-center"><%= users[i].id %></td>
-                                        <td><%= users[i].username %></td>
-                                        <td><%= users[i].email %></td>
-                                        <% if(typeof role != 'undefined' && role == 0) { %>
-                                            <td><%= users[i].role_name %></td>
-                                        <% } %>
-                                        <td class="text-center">
-                                            <% if(users[i].status == 1) { %>
-                                                <label class="label label-success">Active</label>
-                                            <% } else { %>
-                                                <label class="label label-danger">In-active</label>
-                                            <% } %>
-                                        </td>
-                                        <td class="text-center">
-                                            <a class="btn btn-info btn-sm" href="/users/show/<%= users[i].id %>"><i class="fa fa-search"></i></a>
-                                            <a class="btn btn-primary btn-sm" href="/users/edit/<%= users[i].id %>"><i class="fa fa-pencil"></i></a>
-                                            <a class="btn btn-danger btn-sm delete-user" data-user="<%= users[i].id %>" href="javascript:void(0);"><i class="fa fa-times"></i></a>
-                                        </td>
-                                    </tr>
-                                <% } %>
-                            <% } else { %>
-                                <tr>
-                                    <td colspan="<%- (typeof role != 'undefined' && role == 0) ? 6 : 5 %>">
-                                        <div class="alert alert-warning">No Users Exist.</div>
-                                    </td>                            
-                                </tr>
-                            <% } %>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="<%- (typeof role != 'undefined' && role == 0) ? 6 : 5 %>">
-                                    <button type="button" class="btn btn-info btn-rounded">Current Page: <%= Number(current) %>, Total Pages: <%= pages %></button>                                
-                                    <div class="pull-right">
-                                        <% if (pages > 0) { %>
-                                            <ul class="pagination">
-                                                <% if (current == 1) { %>
-                                                    <li class="page-item disabled"><a class="page-link">First</a></li>
-                                                <% } else { %>
-                                                    <li class="page-item"><a class="page-link" href="/users/?page=1">First</a></li>
-                                                <% } %>
-                                                <% var i = (Number(current) > 3 ? Number(current) - 2 : 1) %>
-                                                <% if (i !== 1) { %>
-                                                    <li class="page-item disabled"><a class="page-link">...</a></li>
-                                                <% } %>
-                                                <% for (; i <= (Number(current) + 2) && i <= pages; i++) { %>
-                                                    <% if (i == current) { %>
-                                                        <li class="page-item active"><a class="page-link"><%= i %></a></li>
-                                                    <% } else { %>
-                                                        <li class="page-item"><a class="page-link" href="/users/?page=<%= i %>"><%= i %></a></li>
-                                                    <% } %>
-                                                    <% if (i == Number(current) + 2 && i < pages) { %>
-                                                        <li class="page-item disabled"><a class="page-link">...</a></li>
-                                                    <% } %>
-                                                <% } %>
-                                                <% if (current == pages) { %>
-                                                    <li class="page-item disabled"><a class="page-link">Last</a></li>
-                                                <% } else { %>
-                                                    <li class="page-item"><a class="page-link" href="/users/?page=<%= pages %>">Last</a></li>
-                                                <% } %>
-                                            </ul>
-                                        <% } %>                                        
-                                    </div>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-        
+    <%- include('../partials/message', { messages }); %>
+    <table class="table m-t-10 table-hover">
+        <thead>
+            <tr class="footable-odd">
+                <th width="100px;" class="text-center">
+                    <%- include('../partials/column-sort', { orderColumn: params.orderColumn, orderBy: params.orderBy, type: 'id', columnName: 'S. No.' }); %>
+                </th>
+                <th>
+                    <%- include('../partials/column-sort', { orderColumn: params.orderColumn, orderBy: params.orderBy, type: 'username', columnName: 'Username' }); %>
+                </th>
+                <th>
+                    <%- include('../partials/column-sort', { orderColumn: params.orderColumn, orderBy: params.orderBy, type: 'email', columnName: 'Email' }); %>
+                </th>
+                <% if(typeof role != 'undefined' && role == 0) { %>
+                <th>
+                    <%- include('../partials/column-sort', { orderColumn: params.orderColumn, orderBy: params.orderBy, type: 'role_id', columnName: 'Role' }); %>
+                </th>
+                <% } %>
+                <th width="150px;" class="text-center">
+                    <%- include('../partials/column-sort', { orderColumn: params.orderColumn, orderBy: params.orderBy, type: 'status', columnName: 'Status' }); %>
+                </th>
+                <th width="150px;" class="text-center">Action</th>
+            </tr>
+            <tr>
+                <th>
+                    <%- include('../partials/column-filter', { filterColumn: 'id', filterPlaceholder: 'Id', filterValue: params.id }); %>
+                </th>
+                <th>
+                    <%- include('../partials/column-filter', { filterColumn: 'username', filterPlaceholder: 'Username', filterValue: params.username }); %>
+                </th>
+                <th>
+                    <%- include('../partials/column-filter', { filterColumn: 'email', filterPlaceholder: 'Email', filterValue: params.email }); %>
+                </th>
+                <% if(typeof role != 'undefined' && role == 0) { %>
+                <th>
+                    <select class="form-control role-change" name="role_id" id="role_id">
+                        <option value="" <%= params.role === '' ? 'selected' : '' %>>Role</option>
+                        <option value="1" <%= params.role === 1 ? 'selected' : '' %>>Administrators</option>
+                        <option value="2" <%= params.role === 2 ? 'selected' : '' %>>Teachers</option>
+                        <option value="3" <%= params.role === 3 ? 'selected' : '' %>>Students</option>
+                    </select>
+                </th>
+                <% } %>
+                <th>
+                    <%- include('../partials/column-filter-status', { filterColumn: 'status', filterValue: params.status }); %>
+                </th>
+                <th class="text-center">
+                    <button class="btn btn-warning btn-sm reset-search">Reset</button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if(users.length) { %>
+                <% for(var i = 0; i < users.length; i++) {%>
+                    <tr class="<%= i%2 == 0 ? 'footable-odd' : 'footable-even' %> row-<%= users[i].id %>">
+                        <td class="text-center"><%= users[i].id %></td>
+                        <td><%= users[i].username %></td>
+                        <td><%= users[i].email %></td>
+                        <% if(typeof role != 'undefined' && role == 0) { %>
+                            <td><%= users[i].role_name %></td>
+                        <% } %>
+                        <td class="text-center">
+                            <%- include('../partials/show-status', { status: users[i].status }); %>
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-info btn-sm" href="/user/show/<%= users[i].id %>"><i class="fa fa-search"></i></a>
+                            <a class="btn btn-primary btn-sm" href="/user/edit/<%= users[i].id %>"><i class="fa fa-pencil"></i></a>
+                            <a class="btn btn-danger btn-sm delete-user" data-user="<%= users[i].id %>" href="javascript:void(0);"><i class="fa fa-times"></i></a>
+                        </td>
+                    </tr>
+                <% } %>
+            <% } else { %>
+                <tr>
+                    <td colspan="<%- (typeof role != 'undefined' && role == 0) ? 6 : 5 %>">
+                        <div class="alert alert-warning">No Users Exist.</div>
+                    </td>
+                </tr>
+            <% } %>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="<%- (typeof role != 'undefined' && role == 0) ? 6 : 5 %>">
+                    <%- include('../partials/pagination', { current, pages, path: '/category/' }); %>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+                
+    
     <script type="text/javascript">
         var params = JSON.parse('<%- JSON.stringify(params) %>');
         var messages = JSON.parse('<%- JSON.stringify(messages) %>');

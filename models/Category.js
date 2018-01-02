@@ -18,11 +18,10 @@ var Category = {
             where += " AND id != " + striptags(id);
         }
 
-        where += " AND is_deleted = 0";
+        where += " AND is_deleted = 0;";
 
         query += where;
         query = mysql.format(query, where);
-        console.log(query);
 
         db.connection.query(query, function(err, rows) {
             if (err) {

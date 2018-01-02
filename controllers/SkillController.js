@@ -67,46 +67,30 @@ var SkillController = {
     },
 
     actionCreate: function(req, res, next) {
-        req.flash('type', '');
-        req.flash('message', '');
-        res.render('skill/create', { params: req.body, user: req.user });
+        var skill = { category_id: '', name: '', status: '' };
+        res.render('skill/create', { skill: skill, user: req.user });
     },
 
     actionStore: function(req, res, next) {
-        var message = "";
-
-        req.checkBody('name', 'Skill name is required').notEmpty();
-        var errors = req.validationErrors();
-
-        if (errors) {
-            message = "Please enter skill name";
-            req.flash('type', 'danger');
-            req.flash('message', message);
-            res.render('skill/create', { params: req.body, user: req.user });
-        } else {
-            Skill.checkSkillExists(req.body.name).then(function(result) {
-                if (result.length > 0) {
-                    message = "Skill '<b>" + req.body.name + "</b>' already exists!";
+        var currentDate = commonHelper.getCurrentDateTime();
+        var skill = { category_id: req.body.category_id, name: req.body.name, status: parseInt(req.body.status), created_at: currentDate };
+        Skill.checkSkillExists(skill.name).then(function(result) {
+            if (result.length > 0) {
+                req.flash('type', 'danger');
+                req.flash('message', "Skill '<b>" + req.body.name + "</b>' already exists!");
+                res.render('skill/create', { skill: skill, user: req.user });
+            } else {
+                Skill.addSkill(skill).then(function(result) {
+                    req.flash('type', 'success');
+                    req.flash('message', "Skill added successfully!");
+                    res.redirect('/skill/');
+                }).catch(function(error) {
                     req.flash('type', 'danger');
-                    req.flash('message', message);
-                    res.render('skill/create', { params: req.body, user: req.user });
-                } else {
-                    var currentDate = commonHelper.getCurrentDateTime();
-                    var skill = { category_id: req.body.category, name: req.body.name, created_at: currentDate };
-                    Skill.addSkill(skill).then(function(result) {
-                        message = "Skill added successfully!";
-                        req.flash('type', 'success');
-                        req.flash('message', message);
-                        res.redirect('/skill/');
-                    }).catch(function(error) {
-                        message = "Unable to add new Skill!";
-                        req.flash('type', 'danger');
-                        req.flash('message', message);
-                        res.render('skill/create', { params: req.body, user: req.user });
-                    });
-                }
-            });
-        }
+                    req.flash('message', "Unable to add new Skill!");
+                    res.render('skill/create', { skill: skill, user: req.user });
+                });
+            }
+        });
     },
 
     actionEdit: function(req, res, next) {
@@ -114,74 +98,49 @@ var SkillController = {
 
         if (typeof skill_id != 'undefined' && skill_id != '') {
             Skill.singleSkill(skill_id).then(function(result) {
-                res.render('skill/edit', { skill: result, user: req.user, params: req.body });
+                res.render('skill/edit', { skill: result, user: req.user });
             });
         } else {
-            var message = "Unable to edit Skill!";
             req.flash('type', 'danger');
-            req.flash('message', message);
+            req.flash('message', 'Unable to edit Skill!');
             res.redirect('/skill/');
         }
     },
 
     actionUpdate: function(req, res, next) {
-        var message = "";
         var skill_id = req.params.skill_id;
-        var skill = {};
+        var currentDate = commonHelper.getCurrentDateTime();
+        var skill = { category_id: req.body.category_id, name: req.body.name, status: req.body.status, updated_at: currentDate };
 
-        Skill.singleSkill(skill_id).then(function(result) {
-            skill = result;
-        });
-
-        req.checkBody('name', 'Skill name is required').notEmpty();
-        var errors = req.validationErrors();
-
-        if (errors) {
-            message = "Please enter skill name";
-            req.flash('type', 'danger');
-            req.flash('message', message);
-            res.render('skill/edit', { skill: skill, user: req.user });
-        } else {
-            Skill.checkSkillExists(req.body.name, skill_id).then(function(result) {
-                if (result.length > 0) {
-                    message = "Skill '<b>" + req.body.name + "</b>' already exists!";
+        Skill.checkSkillExists(req.body.name, skill_id).then(function(result) {
+            if (result.length > 0) {
+                req.flash('type', 'danger');
+                req.flash('message', "Skill '<b>" + req.body.name + "</b>' already exists!");
+                res.render('skill/edit', { skill: skill, user: req.user });
+            } else {
+                Skill.updateSkill(skill, skill_id).then(function(result) {
+                    req.flash('type', 'success');
+                    req.flash('message', "Skill updated successfully!");
+                    res.redirect('/skill/');
+                }).catch(function(error) {
                     req.flash('type', 'danger');
-                    req.flash('message', message);
-                    res.render('skill/edit', { response: response, params: req.body, skill: skill, user: req.user });
-                } else {
-                    var currentDate = commonHelper.getCurrentDateTime();
-                    var skillData = { category_id: req.body.category, name: req.body.name, status: req.body.status, updated_at: currentDate };
-                    Skill.updateSkill(skillData, skill_id).then(function(result) {
-                        message = "Skill updated successfully!";
-                        req.flash('type', 'success');
-                        req.flash('message', message);
-                        res.redirect('/skill/');
-                    }).catch(function(error) {
-                        message = "Unable to update Skill!";
-                        req.flash('type', 'danger');
-                        req.flash('message', message);
-                        res.render('skill/edit', { response: response, params: req.body, skill: skill, user: req.user });
-                    });
-                }
-            });
-        }
+                    req.flash('message', "Unable to update Skill!");
+                    res.render('skill/edit', { skill: skill, user: req.user });
+                });
+            }
+        });
     },
 
     actionDelete: function(req, res, next) {
-        var response = { success: false, msg: "" };
+        var response = { success: false, msg: "Unable to delete this Skill!" };
         var skill_id = req.params.skill_id;
 
         Skill.deleteSkill(skill_id).then(function(result) {
             if (result) {
-                response.success = true;
-                response.msg = "Your skill record has been deleted.";
-                res.json(response);
-            } else {
-                response.msg = "Unable to delete this skill!";
-                res.json(response);
+                response = { success: true, msg: "Your skill record has been deleted." };
             }
+            res.json(response);
         }).catch(function(error) {
-            response.msg = "Unable to delete this skill!";
             res.json(response);
         });
     }

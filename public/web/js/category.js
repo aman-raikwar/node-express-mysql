@@ -19,7 +19,7 @@ $(function() {
     });
 
     $(document).on('click', '.reset-search', function() {
-        window.location.href = window.location.origin + window.location.pathname;
+        window.location.href = path;
     });
 
     $(document).on('click', '.delete-category', function() {

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var CategoryController = require('../controllers/CategoryController');
-var CategoryMiddleware = require('../controllers/CategoryMiddleware');
+var CategoryMiddleware = require('../middlewares/CategoryMiddleware');
 
 // route middleware to make sure
 function isLoggedIn(req, res, next) {
@@ -25,7 +25,7 @@ router.get('/create', CategoryController.actionCreate);
 router.post('/create', CategoryMiddleware, CategoryController.actionStore);
 
 router.get('/edit/:category_id', CategoryController.actionEdit);
-router.post('/edit/:category_id', CategoryController.actionUpdate);
+router.post('/edit/:category_id', CategoryMiddleware, CategoryController.actionUpdate);
 
 router.delete('/delete/:category_id', CategoryController.actionDelete);
 

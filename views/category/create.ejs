@@ -3,5 +3,5 @@
     
 <%- contentFor('pageContent') %>
     <%- include('../partials/message'); %>
-    <%- JSON.stringify(category) %>
-    <%- include('_form') %>
+    <%#- JSON.stringify(category) %>
+    <%- include('_form', { action: '/category/create' }) %>

@@ -32,7 +32,7 @@ router.post('/sign-in', passport.authenticate('local-login', { failureRedirect: 
     } else {
         req.session.cookie.expires = false;
     }
-    res.redirect('/category/create');
+    res.redirect('/skill');
 });
 
 router.get('/sign-up', AuthController.actionSignUp);

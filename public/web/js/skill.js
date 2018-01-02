@@ -1,8 +1,13 @@
+// Website Url
 var path = window.location.origin + window.location.pathname;
+
+// Search Params
 var idParam = params.id;
 var categoryParam = params.category;
 var nameParam = params.name;
 var statusParam = params.status;
+
+// Order Column and Order By
 var orderColumnParam = params.orderColumn;
 var orderByParam = params.orderBy;
 
@@ -15,7 +20,7 @@ $(function() {
     });
 
     $(document).on('click', '.reset-search', function() {
-        window.location.href = window.location.origin + window.location.pathname;
+        window.location.href = path;
     });
 
     $(document).on('click', '.delete-skill', function() {
@@ -68,73 +73,29 @@ $(function() {
         window.location.href = path + getParams();
     });
 
-    getAllCategories();
-
 });
-
-function getAllCategories() {
-    $.ajax({
-        url: '/category/all-categories/',
-        type: 'GET',
-        success: function(response) {
-            if (response.success) {
-                var html = '';
-                var category = $('#category').data('category');
-                html += '<option value="0">Select Category</option>';
-                $.each(response.data, function(index, item) {
-                    var selected = category == item.id ? 'selected="selected"' : '';
-                    html += '<option value="' + item.id + '" ' + selected + '>' + item.name + '</option>';
-                });
-                console.log(html);
-                $('#category').html(html);
-            }
-        }
-    });
-}
 
 function getParams() {
     var pathParams = '';
 
     if (typeof idParam != 'undefined' && idParam != '') {
-        if (pathParams != '') {
-            pathParams += '&name=' + idParam;
-        } else {
-            pathParams += '?name=' + idParam;
-        }
+        pathParams += ((pathParams != '') ? '&id=' : '?id=') + idParam;
     }
 
     if (typeof categoryParam != 'undefined' && categoryParam != '') {
-        if (categoryParam != 0) {
-            if (pathParams != '') {
-                pathParams += '&category=' + categoryParam;
-            } else {
-                pathParams += '?category=' + categoryParam;
-            }
-        }
+        pathParams += ((pathParams != '') ? '&category=' : '?category=') + categoryParam;
     }
 
     if (typeof nameParam != 'undefined' && nameParam != '') {
-        if (pathParams != '') {
-            pathParams += '&name=' + nameParam;
-        } else {
-            pathParams += '?name=' + nameParam;
-        }
+        pathParams += ((pathParams != '') ? '&name=' : '?name=') + nameParam;
     }
 
     if (typeof statusParam != 'undefined' && statusParam != '') {
-        if (pathParams != '') {
-            pathParams += '&status=' + statusParam;
-        } else {
-            pathParams += '?status=' + statusParam;
-        }
+        pathParams += ((pathParams != '') ? '&status=' : '?status=') + statusParam;
     }
 
     if (typeof orderColumnParam != 'undefined' && orderColumnParam != '' && typeof orderByParam != 'undefined' && orderByParam != '') {
-        if (pathParams != '') {
-            pathParams += "&orderColumn=" + orderColumnParam + "&orderBy=" + orderByParam;
-        } else {
-            pathParams += "?orderColumn=" + orderColumnParam + "&orderBy=" + orderByParam;
-        }
+        pathParams += (pathParams != '') ? "&orderColumn=" + orderColumnParam + "&orderBy=" + orderByParam : "?orderColumn=" + orderColumnParam + "&orderBy=" + orderByParam;
     }
 
     return pathParams;

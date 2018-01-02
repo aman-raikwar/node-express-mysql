@@ -39,11 +39,7 @@
                         <td class="text-center"><%= categories[i].id %></td>
                         <td><%= categories[i].name %></td>                            
                         <td class="text-center">
-                        <% if(categories[i].status == 1) { %>
-                            <label class="label label-success">Active</label>
-                        <% } else { %>
-                            <label class="label label-danger">In-active</label>
-                        <% } %>
+                            <%- include('../partials/show-status', { status: categories[i].status }); %>
                         </td>
                         <td class="text-center">
                             <a class="btn btn-info btn-sm" href="/category/show/<%= categories[i].id %>"><i class="fa fa-search"></i></a>
