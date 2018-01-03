@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- SITE TITTLE -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tutoring Services</title>
+    <!-- PLUGINS CSS STYLE -->
+    <link rel="stylesheet" href="front/plugins/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="front/plugins/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="front/plugins/simple-line-icons/css/simple-line-icons.css" />    
+    <link rel="stylesheet" href="front/plugins/selectbox/select_option1.css" />
+    <link rel="stylesheet" href="front/plugins/slick/slick.css" media="screen" />
+    <link rel="stylesheet" href="front/plugins/slick/slick-theme.css" media="screen" />
+    <link rel="stylesheet" href="front/plugins/prismjs/prism.css" />
+    <link rel="stylesheet" href="front/plugins/fancybox/jquery.fancybox.min.css"  />
+    <link rel="stylesheet" href="front/plugins/selectbox/select_option1.css" />
+    <link rel="stylesheet" href="front/plugins/isotope/isotope.min.css" />
+    <link rel="stylesheet" href="front/plugins/animate.css" />
+    <!-- REVOLUTION SLIDER -->
+    <link rel="stylesheet" href="front/plugins/revolution/css/settings.css" />
+    <link rel="stylesheet" href="front/plugins/revolution/css/layers.css" />
+    <link rel="stylesheet" href="front/plugins/revolution/css/navigation.css" />
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" href="front/css/style.css" />
+    <link rel="stylesheet" href="front/css/default.css" id="option_color" />
+    <!-- FAVICON -->
+    <link rel="shortcut icon" href="front/img/favicon.png" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body id="body" class="home-classic">
+    <!-- Preloader -->
+    <div id="preloader" class="smooth-loader-wrapper">
+        <div class="smooth-loader">
+            <div class="loader1">
+                <div class="loader-target">
+                    <div class="loader-target-main"></div>
+                    <div class="loader-target-inner"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- HEADER -->
+    <%- include('header'); %>    
+    <div class="main-wrapper ">
+        <%- defineContent('bannerContent') %>
+        <%- defineContent('breadcrumbContent') %>
+        <%- defineContent('pageContent') %>
+        <!-- FOOTER -->
+        <%- include('footer'); %>    
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="bar-1"></span>
+                    <span class="bar-2"></span>
+                </button>
+                <form action="#">
+                    <input type="text" autofocus name="search" placeholder="Search...">
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- JAVASCRIPTS -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsQdSlW4vj5RvXp2_pLnv1s1ErfxjM5_o"></script>
+    <script type="text/javascript" src="front/plugins/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="front/plugins/jquery/jquery-migrate-3.0.0.min.js"></script>
+    <script type="text/javascript" src="front/plugins/bootstrap/js/tether.min.js"></script>
+    <script type="text/javascript" src="front/plugins/bootstrap/js/popper.min.js"></script>
+    <script type="text/javascript" src="front/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="front/plugins/selectbox/jquery.selectbox-0.1.3.min.js"></script>
+    <script type="text/javascript" src="front/plugins/slick/slick.min.js"></script>
+    <script type="text/javascript" src="front/plugins/circle-progress/jquery.appear.js"></script>
+    <script type="text/javascript" src="front/plugins/isotope/isotope.min.js"></script>
+    <script type="text/javascript" src="front/plugins/fancybox/jquery.fancybox.min.js"></script>
+    <script type="text/javascript" src="front/plugins/counterUp/waypoint.js"></script>
+    <script type="text/javascript" src="front/plugins/counterUp/jquery.counterup.js"></script>
+    <script type="text/javascript" src="front/plugins/smoothscroll/SmoothScroll.js"></script>
+    <script type="text/javascript" src="front/plugins/syotimer/jquery.syotimer.min.js"></script>
+    <script type="text/javascript" src="front/plugins/revolution/js/jquery.themepunch.tools.min.js"></script>
+    <script type="text/javascript" src="front/plugins/revolution/js/jquery.themepunch.revolution.min.js"></script>
+    <script type="text/javascript" src="front/plugins/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
+    <script type="text/javascript" src="front/plugins/revolution/js/extensions/revolution.extension.actions.min.js"></script>
+    <script type="text/javascript" src="front/plugins/revolution/js/extensions/revolution.extension.layeranimation.min.js"></script>
+    <script type="text/javascript" src="front/plugins/revolution/js/extensions/revolution.extension.navigation.min.js"></script>
+    <script type="text/javascript" src="front/js/custom.js"></script>
+</body>
+
+</html>

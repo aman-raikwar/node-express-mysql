@@ -18,7 +18,7 @@ var app = express();
 
 //***  session middleware ****/
 app.use(cookieParser());
-app.use(session({ secret: 'mySecretKey', resave: false, saveUninitialized: false }));
+app.use(session({ secret: 'aman9425388641raikwar', resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
@@ -26,20 +26,13 @@ app.use(flash());
 //******** include database ********//
 var db = require('./config/database.js');
 
-//******** include routes ********//
-var indexRoute = require('./routes/index');
-var authRoute = require('./routes/auth');
-var categoryRoute = require('./routes/category');
-var skillRoute = require('./routes/skill');
-var userRoute = require('./routes/user');
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(expressLayouts);
 
-app.set('layout', 'layouts/layout');
+app.set('layout', 'front/layouts/layout');
 
 /**
  * middlewares
@@ -51,7 +44,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(expressValidator());
 app.use(express.static(path.join(__dirname, 'public')));
-//app.use('/nmd', express.static(path.join(__dirname, 'node_modules')));
 
 /**
  * Enable CORS from client-side
@@ -72,29 +64,44 @@ app.use(expressValidator({
             root = namespace.shift(),
             formParam = root;
 
-        while (namespace.length) {
-            formParam += '[' + namespace.shift() + ']';
-        }
-
-        return {
-            param: formParam,
-            msg: msg,
-            value: value
-        };
+        while (namespace.length) { formParam += '[' + namespace.shift() + ']'; }
+        return { param: formParam, msg: msg, value: value };
     }
 }));
 
-//*** use routes *****//
-app.use('/', indexRoute);
-app.use('/auth', authRoute);
-app.use('/category', categoryRoute);
-app.use('/skill', skillRoute);
-app.use('/users', userRoute);
+//********************************//
+//******** Front Routes ********//
+//********************************//
+var frontSiteRoute = require('./routes/front/site');
+
+//********************************//
+//******** Admin Routes ********//
+//********************************//
+// var adminIndexRoute = require('./routes/admin/index');
+// var adminAuthRoute = require('./routes/admin/auth');
+// var adminCategoryRoute = require('./routes/admin/category');
+// var adminSkillRoute = require('./routes/admin/skill');
+// var adminUserRoute = require('./routes/admin/user');
+
+
+//********************************//
+//******** Front Use Routes ********//
+//********************************//
+app.use('/', frontSiteRoute);
+
+//********************************//
+//******** Admin Use Routes ********//
+//********************************//
+// app.use('/admin', adminIndexRoute);
+// app.use('/admin/auth', adminAuthRoute);
+// app.use('/admin/category', adminCategoryRoute);
+// app.use('/admin/skill', adminSkillRoute);
+// app.use('/admin/users', adminUserRoute);
 
 
 //*** catch 404 and forward to error handler *****//
 app.use(function(req, res, next) {
-    res.status(404).render('error/404', { layout: 'layouts/layoutError', title: "Sorry, page not found" });
+    res.status(404).render('front/error/404', { layout: 'front/layouts/layoutError', title: "Sorry, page not found" });
 });
 
 // error handler
@@ -106,7 +113,7 @@ app.use(function(err, req, res, next) {
     console.log(res.locals.message, err);
     // render the error page
     res.status(err.status || 500);
-    res.render('error/500');
+    res.render('front/error/500');
 });
 
 module.exports = app;
