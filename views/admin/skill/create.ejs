@@ -1,7 +1,7 @@
 <%- contentFor('breadcrumbContent') %>
-    <%- include('../partials/breadcrumb', { title: 'Add Skill', options: [{name:'Skills', path:'/skill/'}], otherOption: '<i class="mdi mdi-view-list"></i> Back to Skills', otherOptionPath: '/skill/' }); %>
+    <%- include('../partials/breadcrumb', { title: 'Add Skill', options: [{name:'Skills', path:'/skill/'}], otherOption: '<i class="mdi mdi-view-list"></i> Back to Skills', otherOptionPath: '/admin/skill/' }); %>
     
 <%- contentFor('pageContent') %>
     <%- include('../partials/message'); %>
     <%- JSON.stringify(skill) %>
-    <%- include('_form', { action: '/skill/create' }) %>
+    <%- include('_form', { action: '/admin/skill/create' }) %>

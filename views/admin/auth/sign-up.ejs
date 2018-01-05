@@ -1,7 +1,7 @@
 <%- contentFor('pageContent') %>    
     <div class="login-box card">
         <div class="card-body">            
-            <form class="form-horizontal form-material" id="loginform" method="post" action="/auth/sign-up">
+            <form class="form-horizontal form-material" id="loginform" method="post" action="/admin/auth/sign-up">
                 <h1><a href="javascript:void(0)" class="text-center db">NodeExpress</a></h1>
                 <h3 class="box-title m-t-40 m-b-0">Register Now</h3><small>Create your account and enjoy</small>
                 <% if(typeof messages.type !='undefined' && messages.type !='') { %>
@@ -51,7 +51,7 @@
                 </div>
                 <div class="form-group m-b-0">
                     <div class="col-sm-12 text-center">
-                        <p>Already have an account? <a href="/auth/sign-in" class="text-info m-l-5"><b>Sign In</b></a></p>
+                        <p>Already have an account? <a href="/admin/auth/sign-in" class="text-info m-l-5"><b>Sign In</b></a></p>
                     </div>
                 </div>
             </form>

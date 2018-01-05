@@ -1,6 +1,6 @@
 var fs = require('fs');
-var Category = require('../models/Category');
-var commonHelper = require('../helper/common_helper.js');
+var Category = require('../../models/Category');
+var commonHelper = require('../../helper/common_helper.js');
 
 var CategoryController = {
 
@@ -28,7 +28,7 @@ var CategoryController = {
             total = result[0].total;
 
             Category.getCategories(limit, offset, searchParams, orderParams).then(function(result) {
-                res.render('category/index', {
+                res.render('admin/category/index', {
                     categories: result,
                     current: page,
                     pages: Math.ceil(total / limit),
@@ -46,27 +46,27 @@ var CategoryController = {
         if (typeof category_id != 'undefined' && category_id != '') {
             Category.singleCategory(category_id).then(function(result) {
                 if (typeof result != 'undefined' && result != '') {
-                    res.render('category/show', { category: result, params: req.body, user: req.user });
+                    res.render('admin/category/show', { category: result, params: req.body, user: req.user });
                 } else {
                     req.flash('type', 'danger');
                     req.flash('message', message);
-                    res.redirect('/category/');
+                    res.redirect('/admin/category/');
                 }
             }).catch(function(error) {
                 req.flash('type', 'danger');
                 req.flash('message', message);
-                res.redirect('/category/');
+                res.redirect('/admin/category/');
             });
         } else {
             req.flash('type', 'danger');
             req.flash('message', message);
-            res.redirect('/category/');
+            res.redirect('/admin/category/');
         }
     },
 
     actionCreate: function(req, res, next) {
         var category = { name: '', status: '' };
-        res.render('category/create', { category: category, user: req.user });
+        res.render('admin/category/create', { category: category, user: req.user });
     },
 
     actionStore: function(req, res, next) {
@@ -76,16 +76,16 @@ var CategoryController = {
             if (result.length > 0) {
                 req.flash('type', 'danger');
                 req.flash('message', "Category '<b>" + req.body.name + "</b>' already exists!");
-                res.render('category/create', { category: category, user: req.user });
+                res.render('admin/category/create', { category: category, user: req.user });
             } else {
                 Category.addCategory(category).then(function(result) {
                     req.flash('type', 'success');
                     req.flash('message', "Category added successfully!");
-                    res.redirect('/category/');
+                    res.redirect('/admin/category/');
                 }).catch(function(error) {
                     req.flash('type', 'danger');
                     req.flash('message', "Unable to add new Category!");
-                    res.render('category/create', { category: category, user: req.user });
+                    res.render('admin/category/create', { category: category, user: req.user });
                 });
             }
         });
@@ -96,12 +96,12 @@ var CategoryController = {
 
         if (typeof category_id != 'undefined' && category_id != '') {
             Category.singleCategory(category_id).then(function(result) {
-                res.render('category/edit', { category: result, user: req.user });
+                res.render('admin/category/edit', { category: result, user: req.user });
             });
         } else {
             req.flash('type', "danger");
             req.flash('message', "Unable to edit Category!");
-            res.redirect('/category/');
+            res.redirect('/admin/category/');
         }
     },
 
@@ -114,16 +114,16 @@ var CategoryController = {
             if (result.length > 0) {
                 req.flash('type', 'danger');
                 req.flash('message', "Category '<b>" + req.body.name + "</b>' already exists!");
-                res.render('category/edit', { category: category, user: req.user });
+                res.render('admin/category/edit', { category: category, user: req.user });
             } else {
                 Category.updateCategory(category, category_id).then(function(result) {
                     req.flash('type', 'success');
                     req.flash('message', "Category updated successfully!");
-                    res.redirect('/category/');
+                    res.redirect('/admin/category/');
                 }).catch(function(error) {
                     req.flash('type', 'danger');
                     req.flash('message', "Unable to update Category!");
-                    res.render('category/edit', { category: category, user: req.user });
+                    res.render('admin/category/edit', { category: category, user: req.user });
                 });
             }
         });

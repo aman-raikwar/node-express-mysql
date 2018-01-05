@@ -1,21 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var SkillController = require('../controllers/SkillController');
-var SkillMiddleware = require('../middlewares/SkillMiddleware');
-
-// route middleware to make sure
-function isLoggedIn(req, res, next) {
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
-        return next();
-
-    // if they aren't redirect them to the home page
-    res.redirect('/');
-}
-
-router.all('/', isLoggedIn, function(req, res, next) {
-    next();
-});
+var SkillController = require('../../controllers/admin/SkillController');
+var SkillMiddleware = require('../../middlewares/admin/SkillMiddleware');
 
 router.get('/', SkillController.actionIndex);
 

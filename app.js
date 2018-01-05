@@ -32,8 +32,6 @@ app.set('view engine', 'ejs');
 
 app.use(expressLayouts);
 
-app.set('layout', 'front/layouts/layout');
-
 /**
  * middlewares
  */
@@ -77,11 +75,11 @@ var frontSiteRoute = require('./routes/front/site');
 //********************************//
 //******** Admin Routes ********//
 //********************************//
-// var adminIndexRoute = require('./routes/admin/index');
-// var adminAuthRoute = require('./routes/admin/auth');
-// var adminCategoryRoute = require('./routes/admin/category');
-// var adminSkillRoute = require('./routes/admin/skill');
-// var adminUserRoute = require('./routes/admin/user');
+var adminIndexRoute = require('./routes/admin/index');
+var adminAuthRoute = require('./routes/admin/auth');
+var adminCategoryRoute = require('./routes/admin/category');
+var adminSkillRoute = require('./routes/admin/skill');
+var adminUserRoute = require('./routes/admin/user');
 
 
 //********************************//
@@ -92,16 +90,36 @@ app.use('/', frontSiteRoute);
 //********************************//
 //******** Admin Use Routes ********//
 //********************************//
-// app.use('/admin', adminIndexRoute);
-// app.use('/admin/auth', adminAuthRoute);
-// app.use('/admin/category', adminCategoryRoute);
-// app.use('/admin/skill', adminSkillRoute);
-// app.use('/admin/users', adminUserRoute);
+app.use('/admin', adminIndexRoute);
+app.use('/admin/auth', adminAuthRoute);
+app.use('/admin/category', adminCategoryRoute);
+app.use('/admin/skill', adminSkillRoute);
+app.use('/admin/users', adminUserRoute);
+
+
+app.route('/').get(function(req, res, next) {
+    res.locals.layout = "front/layouts/layout";
+    next();
+});
+app.route('/admin*').get(function(req, res, next) {
+    res.locals.layout = "admin/layouts/layout";
+    next();
+});
+
+app.all('/admin*', function(req, res, next) {
+    console.log("req.user=>>>", req.user);
+    console.log(req.isAuthenticated());
+    if (req.isAuthenticated())
+        next();
+
+    // if they aren't redirect them to the sign-in page
+    res.redirect('/admin/auth/sign-in');
+});
 
 
 //*** catch 404 and forward to error handler *****//
 app.use(function(req, res, next) {
-    res.status(404).render('front/error/404', { layout: 'front/layouts/layoutError', title: "Sorry, page not found" });
+    res.status(404).render('admin/error/404', { layout: 'admin/layouts/layoutError', title: "Sorry, page not found" });
 });
 
 // error handler
@@ -113,7 +131,7 @@ app.use(function(err, req, res, next) {
     console.log(res.locals.message, err);
     // render the error page
     res.status(err.status || 500);
-    res.render('front/error/500');
+    res.render('admin/error/500');
 });
 
 module.exports = app;

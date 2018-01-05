@@ -1,20 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var UserController = require('../controllers/UserController');
-
-// route middleware to make sure
-function isLoggedIn(req, res, next) {
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
-        return next();
-
-    // if they aren't redirect them to the home page
-    res.redirect('/');
-}
-
-router.all('/', isLoggedIn, function(req, res, next) {
-    next();
-});
+var UserController = require('../../controllers/admin/UserController');
 
 function noRole(req, res, next) {
     req.body.role_id = '';

@@ -1,6 +1,6 @@
 var fs = require('fs');
-var Skill = require('../models/Skill');
-var commonHelper = require('../helper/common_helper.js');
+var Skill = require('../../models/Skill');
+var commonHelper = require('../../helper/common_helper.js');
 
 var SkillController = {
 
@@ -30,7 +30,7 @@ var SkillController = {
             total = result[0].total;
 
             Skill.getSkills(limit, offset, searchParams, orderParams).then(function(result) {
-                res.render('skill/index', {
+                res.render('admin/skill/index', {
                     skills: result,
                     current: page,
                     pages: Math.ceil(total / limit),
@@ -48,27 +48,27 @@ var SkillController = {
         if (typeof skill_id != 'undefined' && skill_id != '') {
             Skill.singleSkill(skill_id).then(function(result) {
                 if (typeof result != 'undefined' && result != '') {
-                    res.render('skill/show', { skill: result, user: req.user });
+                    res.render('admin/skill/show', { skill: result, user: req.user });
                 } else {
                     req.flash('type', 'danger');
                     req.flash('message', message);
-                    res.redirect('/skill/');
+                    res.redirect('/admin/skill/');
                 }
             }).catch(function(error) {
                 req.flash('type', 'danger');
                 req.flash('message', message);
-                res.redirect('/skill/');
+                res.redirect('/admin/skill/');
             });
         } else {
             req.flash('type', 'danger');
             req.flash('message', message);
-            res.redirect('/skill/');
+            res.redirect('/admin/skill/');
         }
     },
 
     actionCreate: function(req, res, next) {
         var skill = { category_id: '', name: '', status: '' };
-        res.render('skill/create', { skill: skill, user: req.user });
+        res.render('admin/skill/create', { skill: skill, user: req.user });
     },
 
     actionStore: function(req, res, next) {
@@ -78,16 +78,16 @@ var SkillController = {
             if (result.length > 0) {
                 req.flash('type', 'danger');
                 req.flash('message', "Skill '<b>" + req.body.name + "</b>' already exists!");
-                res.render('skill/create', { skill: skill, user: req.user });
+                res.render('admin/skill/create', { skill: skill, user: req.user });
             } else {
                 Skill.addSkill(skill).then(function(result) {
                     req.flash('type', 'success');
                     req.flash('message', "Skill added successfully!");
-                    res.redirect('/skill/');
+                    res.redirect('/admin/skill/');
                 }).catch(function(error) {
                     req.flash('type', 'danger');
                     req.flash('message', "Unable to add new Skill!");
-                    res.render('skill/create', { skill: skill, user: req.user });
+                    res.render('admin/skill/create', { skill: skill, user: req.user });
                 });
             }
         });
@@ -98,12 +98,12 @@ var SkillController = {
 
         if (typeof skill_id != 'undefined' && skill_id != '') {
             Skill.singleSkill(skill_id).then(function(result) {
-                res.render('skill/edit', { skill: result, user: req.user });
+                res.render('admin/skill/edit', { skill: result, user: req.user });
             });
         } else {
             req.flash('type', 'danger');
             req.flash('message', 'Unable to edit Skill!');
-            res.redirect('/skill/');
+            res.redirect('/admin/skill/');
         }
     },
 
@@ -116,16 +116,16 @@ var SkillController = {
             if (result.length > 0) {
                 req.flash('type', 'danger');
                 req.flash('message', "Skill '<b>" + req.body.name + "</b>' already exists!");
-                res.render('skill/edit', { skill: skill, user: req.user });
+                res.render('admin/skill/edit', { skill: skill, user: req.user });
             } else {
                 Skill.updateSkill(skill, skill_id).then(function(result) {
                     req.flash('type', 'success');
                     req.flash('message', "Skill updated successfully!");
-                    res.redirect('/skill/');
+                    res.redirect('/admin/skill/');
                 }).catch(function(error) {
                     req.flash('type', 'danger');
                     req.flash('message', "Unable to update Skill!");
-                    res.render('skill/edit', { skill: skill, user: req.user });
+                    res.render('admin/skill/edit', { skill: skill, user: req.user });
                 });
             }
         });

@@ -1,21 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var CategoryController = require('../controllers/CategoryController');
-var CategoryMiddleware = require('../middlewares/CategoryMiddleware');
-
-// route middleware to make sure
-function isLoggedIn(req, res, next) {
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
-        return next();
-
-    // if they aren't redirect them to the home page
-    res.redirect('/');
-}
-
-router.all('/', isLoggedIn, function(req, res, next) {
-    next();
-});
+var CategoryController = require('../../controllers/admin/CategoryController');
+var CategoryMiddleware = require('../../middlewares/admin/CategoryMiddleware');
 
 router.get('/', CategoryController.actionIndex);
 

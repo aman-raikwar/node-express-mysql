@@ -1,5 +1,5 @@
 <%- contentFor('breadcrumbContent') %>
-    <%- include('../partials/breadcrumb', { title: 'Skills', options: {}, otherOption: '<i class="fa fa-plus"></i> Add Skill', otherOptionPath: '/skill/create' }); %>
+    <%- include('../partials/breadcrumb', { title: 'Skills', options: {}, otherOption: '<i class="fa fa-plus"></i> Add Skill', otherOptionPath: '/admin/skill/create' }); %>
 
 <%- contentFor('pageContent') %>
     <%- include('../partials/message', { messages }); %>
@@ -51,8 +51,8 @@
                             <%- include('../partials/show-status', { status: skills[i].status }); %>
                         </td>
                         <td class="text-center">
-                            <a class="btn btn-info btn-sm" href="/skill/show/<%= skills[i].id %>"><i class="fa fa-search"></i></a>
-                            <a class="btn btn-primary btn-sm" href="/skill/edit/<%= skills[i].id %>"><i class="fa fa-pencil"></i></a>
+                            <a class="btn btn-info btn-sm" href="/admin/skill/show/<%= skills[i].id %>"><i class="fa fa-search"></i></a>
+                            <a class="btn btn-primary btn-sm" href="/admin/skill/edit/<%= skills[i].id %>"><i class="fa fa-pencil"></i></a>
                             <a class="btn btn-danger btn-sm delete-skill" data-skill="<%= skills[i].id %>" href="javascript:void(0);"><i class="fa fa-times"></i></a>
                         </td>
                     </tr>
